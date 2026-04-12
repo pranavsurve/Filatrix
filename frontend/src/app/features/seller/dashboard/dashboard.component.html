@@ -1,0 +1,64 @@
+<div class="dashboard-container container">
+  <h1>Seller Dashboard</h1>
+
+  @if (loading()) {
+    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+  } @else {
+    <div class="stats-grid">
+      <mat-card class="stat-card">
+        <mat-icon>inventory_2</mat-icon>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()?.totalProducts || 0 }}</span>
+          <span class="stat-label">Total Products</span>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>check_circle</mat-icon>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()?.approvedProducts || 0 }}</span>
+          <span class="stat-label">Approved</span>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card pending">
+        <mat-icon>hourglass_empty</mat-icon>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()?.pendingProducts || 0 }}</span>
+          <span class="stat-label">Pending</span>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>attach_money</mat-icon>
+        <div class="stat-info">
+          <span class="stat-value">\${{ (stats()?.totalEarnings || 0).toFixed(2) }}</span>
+          <span class="stat-label">Total Earnings</span>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-icon>shopping_bag</mat-icon>
+        <div class="stat-info">
+          <span class="stat-value">{{ stats()?.totalSales || 0 }}</span>
+          <span class="stat-label">Total Sales</span>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="actions">
+      <a mat-raised-button color="primary" routerLink="/seller/products/new">
+        <mat-icon>add</mat-icon>
+        Add New Product
+      </a>
+      <a mat-stroked-button routerLink="/seller/products">
+        <mat-icon>list</mat-icon>
+        Manage Products
+      </a>
+      <a mat-stroked-button routerLink="/seller/orders">
+        <mat-icon>receipt</mat-icon>
+        View Orders
+      </a>
+    </div>
+  }
+</div>

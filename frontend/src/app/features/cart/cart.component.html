@@ -1,0 +1,71 @@
+<div class="cart-container container">
+  <h1>Shopping Cart</h1>
+
+  @if (loading()) {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else if (items().length === 0) {
+    <div class="empty-cart">
+      <mat-icon>shopping_cart</mat-icon>
+      <h3>Your cart is empty</h3>
+      <p>Add some 3D printed products to get started</p>
+      <a mat-raised-button color="primary" routerLink="/marketplace">Browse Marketplace</a>
+    </div>
+  } @else {
+    <div class="cart-content">
+      <div class="cart-items">
+        @for (item of items(); track item._id) {
+          <mat-card class="cart-item">
+            <div class="item-image">
+              @if (item.product?.thumbnail) {
+                <img [src]="item.product.thumbnail" [alt]="item.product.title">
+              } @else {
+                <mat-icon>3d_rotation</mat-icon>
+              }
+            </div>
+            <div class="item-details">
+              <h3>{{ item.product?.title }}</h3>
+              <p class="price">\${{ item.product?.price?.toFixed(2) }}</p>
+            </div>
+            <div class="item-quantity">
+              <button mat-icon-button (click)="decrementQuantity(item)" [disabled]="item.quantity <= 1">
+                <mat-icon>remove</mat-icon>
+              </button>
+              <span>{{ item.quantity }}</span>
+              <button mat-icon-button (click)="incrementQuantity(item)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            <div class="item-subtotal">
+              \${{ (item.product?.price || 0) * item.quantity | number:'1.2-2' }}
+            </div>
+            <button mat-icon-button color="warn" (click)="removeItem(item._id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card>
+        }
+      </div>
+
+      <mat-card class="cart-summary">
+        <h2>Summary</h2>
+        <div class="summary-row">
+          <span>Subtotal ({{ items().length }} items)</span>
+          <span>\${{ subtotal() | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>Calculated at checkout</span>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span>\${{ subtotal() | number:'1.2-2' }}</span>
+        </div>
+        <a mat-raised-button color="primary" routerLink="/checkout" class="checkout-btn">
+          Proceed to Checkout
+        </a>
+      </mat-card>
+    </div>
+  }
+</div>

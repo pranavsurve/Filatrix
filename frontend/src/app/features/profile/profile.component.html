@@ -1,0 +1,41 @@
+<div class="profile-container container">
+  <h1>My Profile</h1>
+
+  <mat-card class="profile-card">
+    <div class="profile-header">
+      <div class="avatar">
+        @if (user()?.avatar) {
+          <img [src]="user()!.avatar" [alt]="user()!.name">
+        } @else {
+          <mat-icon>account_circle</mat-icon>
+        }
+      </div>
+      <div class="info">
+        <h2>{{ user()?.name }}</h2>
+        <p>{{ user()?.email }}</p>
+        <span class="role">{{ user()?.role | titlecase }}</span>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="edit-form">
+    <h3>Edit Profile</h3>
+    <form (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="name" name="name" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Avatar URL</mat-label>
+        <input matInput [(ngModel)]="avatar" name="avatar">
+      </mat-form-field>
+
+      @if (success()) {
+        <p class="success-message">Profile updated successfully!</p>
+      }
+
+      <button mat-raised-button color="primary" type="submit">Save Changes</button>
+    </form>
+  </mat-card>
+</div>

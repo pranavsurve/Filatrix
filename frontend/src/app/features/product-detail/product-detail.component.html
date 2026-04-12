@@ -1,0 +1,143 @@
+<div class="product-detail container">
+  @if (loading()) {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else if (product()) {
+    <div class="breadcrumb">
+      <a routerLink="/marketplace">Marketplace</a>
+      <mat-icon>chevron_right</mat-icon>
+      <span>{{ product()!.title }}</span>
+    </div>
+
+    <div class="product-content">
+      <div class="product-images">
+        <div class="main-image">
+          @if (selectedImage()) {
+            <img [src]="selectedImage()" [alt]="product()!.title">
+          } @else {
+            <div class="placeholder">
+              <mat-icon>3d_rotation</mat-icon>
+              <p>No preview available</p>
+            </div>
+          }
+        </div>
+        @if (product()!.previewImages && product()!.previewImages.length > 1) {
+          <div class="thumbnail-list">
+            @for (img of product()!.previewImages; track img) {
+              <button
+                class="thumbnail"
+                [class.active]="selectedImage() === img"
+                (click)="selectImage(img)">
+                <img [src]="img" [alt]="product()!.title">
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="product-info">
+        <h1>{{ product()!.title }}</h1>
+
+        <div class="meta">
+          <span class="seller">
+            <mat-icon>person</mat-icon>
+            by {{ product()!.seller?.name }}
+          </span>
+          @if (product()!.averageRating > 0) {
+            <span class="rating">
+              <mat-icon>star</mat-icon>
+              {{ product()!.averageRating.toFixed(1) }}
+              ({{ product()!.reviewCount }} reviews)
+            </span>
+          }
+          <span class="downloads">
+            <mat-icon>download</mat-icon>
+            {{ product()!.downloadCount }} downloads
+          </span>
+        </div>
+
+        <div class="price-section">
+          <span class="price">\${{ product()!.price.toFixed(2) }}</span>
+          @if (product()!.fileType) {
+            <span class="file-type">{{ product()!.fileType | uppercase }} files included</span>
+          }
+        </div>
+
+        <p class="description">{{ product()!.description }}</p>
+
+        <div class="tags">
+          @for (tag of product()!.tags; track tag) {
+            <mat-chip>{{ tag }}</mat-chip>
+          }
+        </div>
+
+        @if (product()!.dimensions) {
+          <div class="specs">
+            <h3>Dimensions</h3>
+            <p>{{ product()!.dimensions!.width }} x {{ product()!.dimensions!.height }} x {{ product()!.dimensions!.depth }} mm</p>
+          </div>
+        }
+
+        @if (product()!.printSettings) {
+          <div class="specs">
+            <h3>Print Settings</h3>
+            <ul>
+              @if (product()!.printSettings!.layerHeight) {
+                <li>Layer Height: {{ product()!.printSettings!.layerHeight }}</li>
+              }
+              @if (product()!.printSettings!.infill) {
+                <li>Infill: {{ product()!.printSettings!.infill }}</li>
+              }
+              @if (product()!.printSettings!.material) {
+                <li>Material: {{ product()!.printSettings!.material }}</li>
+              }
+            </ul>
+          </div>
+        }
+
+        <div class="actions">
+          @if (isAuthenticated()) {
+            <button mat-raised-button color="primary" (click)="addToCart()">
+              <mat-icon>add_shopping_cart</mat-icon>
+              Add to Cart
+            </button>
+            <button mat-stroked-button (click)="toggleWishlist()">
+              <mat-icon>{{ isInWishlist() ? 'favorite' : 'favorite_border' }}</mat-icon>
+              {{ isInWishlist() ? 'Remove from Wishlist' : 'Add to Wishlist' }}
+            </button>
+          } @else {
+            <a mat-raised-button color="primary" routerLink="/auth/login">Login to Purchase</a>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (reviews().length > 0) {
+      <section class="reviews-section">
+        <h2>Customer Reviews</h2>
+        <div class="reviews-list">
+          @for (review of reviews(); track review._id) {
+            <div class="review-card">
+              <div class="review-header">
+                <div class="reviewer">
+                  <mat-icon>account_circle</mat-icon>
+                  <span>{{ review.user?.name }}</span>
+                </div>
+                <div class="rating">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <mat-icon>{{ star <= review.rating ? 'star' : 'star_border' }}</mat-icon>
+                  }
+                </div>
+              </div>
+              @if (review.comment) {
+                <p class="comment">{{ review.comment }}</p>
+              }
+              <span class="date">{{ review.createdAt | date }}</span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+  }
+</div>
