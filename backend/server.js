@@ -32,6 +32,35 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+app.get('/api/test', (req, res) => {
+  res.json({
+    message: 'API is working!',
+    timestamp: new Date().toISOString(),
+    ip: req.ip,
+    headers: req.headers
+  });
+});
+
+app.get('/api/dbtest', async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const state = mongoose.connection.readyState;
+    const states = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+    res.json({
+      dbStatus: states[state] || 'unknown',
+      mongoUri: process.env.MONGO_URI ? 'configured' : 'missing',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
