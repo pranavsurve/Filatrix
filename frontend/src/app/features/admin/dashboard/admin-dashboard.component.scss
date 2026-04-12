@@ -1,0 +1,35 @@
+.admin-dashboard {
+  h1 { margin-bottom: 2rem; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+
+    mat-icon {
+      font-size: 2.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      color: #3f51b5;
+    }
+
+    &.pending mat-icon { color: #ff9800; }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 0.875rem;
+    }
+  }
+}

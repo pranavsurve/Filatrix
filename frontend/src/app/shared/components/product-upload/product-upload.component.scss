@@ -1,0 +1,466 @@
+.product-upload-container {
+  padding: 1rem 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.upload-card {
+  border-radius: 12px;
+
+  mat-card-header {
+    margin-bottom: 1.5rem;
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+
+      mat-icon {
+        color: #3f51b5;
+      }
+    }
+
+    mat-card-subtitle {
+      margin-top: 0.5rem;
+      color: #666;
+    }
+  }
+
+  mat-card-content {
+    padding: 0 1rem 1rem;
+  }
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .full-width {
+    width: 100%;
+  }
+
+  // Form Rows
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
+    &.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+
+      &.three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  // Tags Preview
+  .tags-preview {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: -1rem;
+
+    .tags-label {
+      font-size: 0.875rem;
+      color: #666;
+    }
+
+    mat-chip {
+      font-size: 0.75rem;
+    }
+  }
+
+  // Divider
+  mat-divider {
+    margin: 0.5rem 0;
+  }
+
+  // Upload Sections
+  .upload-section {
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+
+      mat-icon {
+        color: #3f51b5;
+      }
+    }
+
+    .section-hint {
+      font-size: 0.875rem;
+      color: #666;
+      margin-bottom: 1rem;
+    }
+
+    h4 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+
+      mat-icon {
+        color: #666;
+        font-size: 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+    }
+  }
+
+  // Optional Sections
+  .optional-section {
+    padding: 1rem;
+    background: #fafafa;
+    border-radius: 8px;
+  }
+
+  // Drop Zones
+  .drop-zone {
+    border: 2px dashed #bdbdbd;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    background: #fafafa;
+
+    &:hover {
+      border-color: #3f51b5;
+      background: #f5f5ff;
+    }
+
+    &.has-files,
+    &.has-file {
+      border-style: solid;
+      border-color: #3f51b5;
+      background: #f5f5ff;
+    }
+
+    .drop-zone-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+
+      mat-icon {
+        font-size: 3rem;
+        width: 3rem;
+        height: 3rem;
+        color: #9e9e9e;
+      }
+
+      p {
+        margin: 0;
+        font-weight: 500;
+        color: #333;
+      }
+
+      span {
+        color: #666;
+        font-size: 0.875rem;
+      }
+
+      .btn-browse {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: #3f51b5;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #303f9f;
+        }
+      }
+    }
+  }
+
+  // Model Zone (specific styling)
+  .model-zone {
+    &.has-file {
+      padding: 1.5rem;
+    }
+  }
+
+  // Image Previews
+  .image-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+
+    .preview-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+
+      .preview-image {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+        overflow: hidden;
+        background: white;
+        border: 1px solid #e0e0e0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .remove-btn {
+          position: absolute;
+          top: 4px;
+          right: 4px;
+          width: 24px;
+          height: 24px;
+          min-width: 24px;
+          padding: 0;
+          background: rgba(0, 0, 0, 0.6);
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          border: none;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+          }
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.8);
+          }
+        }
+      }
+
+      .file-name {
+        font-size: 0.75rem;
+        color: #333;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .file-size {
+        font-size: 0.625rem;
+        color: #999;
+      }
+    }
+
+    .add-more {
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #bdbdbd;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      mat-icon {
+        color: #9e9e9e;
+      }
+
+      span {
+        font-size: 0.75rem;
+        color: #9e9e9e;
+      }
+
+      &:hover {
+        border-color: #3f51b5;
+        background: #f5f5ff;
+
+        mat-icon,
+        span {
+          color: #3f51b5;
+        }
+      }
+    }
+  }
+
+  // Selected File Display
+  .selected-file {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+
+    .file-icon {
+      width: 60px;
+      height: 60px;
+      background: #e8eaf6;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      mat-icon {
+        color: #3f51b5;
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+      }
+
+      .file-type {
+        font-size: 0.625rem;
+        font-weight: 700;
+        color: #3f51b5;
+      }
+    }
+
+    .file-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      min-width: 0;
+
+      .file-name {
+        font-weight: 500;
+        color: #333;
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .file-size {
+        font-size: 0.875rem;
+        color: #666;
+      }
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #c62828;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #ffebee;
+      }
+
+      mat-icon {
+        font-size: 1.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+
+  // Form Actions
+  .form-actions {
+    margin-top: 1rem;
+
+    .submit-progress {
+      margin-bottom: 1rem;
+      border-radius: 4px;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+
+      button[type="submit"] {
+        min-width: 160px;
+        height: 48px;
+
+        mat-spinner {
+          display: inline-block;
+          margin-right: 0.5rem;
+        }
+
+        mat-icon {
+          margin-right: 0.5rem;
+        }
+      }
+
+      button[type="button"] {
+        min-width: 100px;
+      }
+    }
+  }
+}
+
+// Error states
+mat-error {
+  font-size: 0.75rem;
+}
+
+// Responsive
+@media (max-width: 600px) {
+  .product-upload-container {
+    padding: 0.5rem;
+  }
+
+  .upload-card {
+    border-radius: 8px;
+
+    mat-card-header mat-card-title {
+      font-size: 1.25rem;
+    }
+  }
+
+  .upload-form {
+    gap: 1rem;
+
+    .drop-zone {
+      padding: 1.5rem 1rem;
+    }
+
+    .image-previews {
+      .preview-item {
+        .preview-image {
+          width: 80px;
+          height: 80px;
+        }
+      }
+
+      .add-more {
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .form-actions .action-buttons {
+      flex-direction: column-reverse;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

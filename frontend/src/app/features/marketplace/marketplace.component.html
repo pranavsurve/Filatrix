@@ -1,0 +1,93 @@
+<div class="marketplace container">
+  <header class="page-header">
+    <h1>3D Print Marketplace</h1>
+    <p>Discover unique 3D printed objects from talented makers</p>
+  </header>
+
+  <div class="filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
+        <mat-option value="">All Categories</mat-option>
+        <mat-option value="art">Art & Sculpture</mat-option>
+        <mat-option value="toys">Toys & Games</mat-option>
+        <mat-option value="home">Home & Decor</mat-option>
+        <mat-option value="tools">Tools & Parts</mat-option>
+        <mat-option value="jewelry">Jewelry</mat-option>
+        <mat-option value="other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sort By</mat-label>
+      <mat-select [(ngModel)]="sortBy" (ngModelChange)="onFilterChange()">
+        <mat-option value="">Newest</mat-option>
+        <mat-option value="price_asc">Price: Low to High</mat-option>
+        <mat-option value="price_desc">Price: High to Low</mat-option>
+        <mat-option value="rating">Highest Rated</mat-option>
+        <mat-option value="popular">Most Popular</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Search products...">
+      <button matSuffix mat-icon-button (click)="onSearch()">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  @if (loading()) {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  } @else if (products().length === 0) {
+    <div class="empty-state">
+      <mat-icon>search_off</mat-icon>
+      <h3>No products found</h3>
+      <p>Try adjusting your filters or search terms</p>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (product of products(); track product._id) {
+        <mat-card class="product-card" routerLink="/product/{{ product._id }}">
+          <div class="product-image">
+            @if (product.thumbnail) {
+              <img [src]="product.thumbnail" [alt]="product.title">
+            } @else {
+              <div class="placeholder-image">
+                <mat-icon>3d_rotation</mat-icon>
+              </div>
+            }
+          </div>
+          <mat-card-content>
+            <h3>{{ product.title }}</h3>
+            <div class="product-meta">
+              <span class="price">\${{ product.price.toFixed(2) }}</span>
+              @if (product.averageRating > 0) {
+                <span class="rating">
+                  <mat-icon>star</mat-icon>
+                  {{ product.averageRating.toFixed(1) }}
+                </span>
+              }
+            </div>
+            <p class="seller">by {{ product.seller?.name || 'Unknown' }}</p>
+            <div class="tags">
+              @for (tag of product.tags?.slice(0, 3); track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+
+    <mat-paginator
+      [length]="pagination().total"
+      [pageSize]="pagination().limit"
+      [pageSizeOptions]="[12, 24, 48]"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  }
+</div>

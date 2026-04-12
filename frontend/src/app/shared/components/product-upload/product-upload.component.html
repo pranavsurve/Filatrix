@@ -1,0 +1,277 @@
+<div class="product-upload-container">
+
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>add_circle</mat-icon>
+        Upload New Product
+      </mat-card-title>
+      <mat-card-subtitle>Fill in the details below to list your 3D printed item</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
+
+        <!-- Title -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Product Title *</mat-label>
+          <input matInput formControlName="title" placeholder="e.g., Geometric Planter Pot">
+          <mat-icon matPrefix>label</mat-icon>
+          @if (isFieldInvalid('title')) {
+            <mat-error>{{ getErrorMessage('title') }}</mat-error>
+          }
+          <mat-hint>{{ uploadForm.get('title')?.value?.length || 0 }}/100 characters</mat-hint>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description *</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="5"
+            placeholder="Describe your product in detail..."></textarea>
+          <mat-icon matPrefix>description</mat-icon>
+          @if (isFieldInvalid('description')) {
+            <mat-error>{{ getErrorMessage('description') }}</mat-error>
+          }
+          <mat-hint>{{ uploadForm.get('description')?.value?.length || 0 }}/2000 characters</mat-hint>
+        </mat-form-field>
+
+        <!-- Price and Category Row -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Price (USD) *</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="price" placeholder="0.00">
+            @if (isFieldInvalid('price')) {
+              <mat-error>{{ getErrorMessage('price') }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Category *</mat-label>
+            <mat-select formControlName="category">
+              <mat-option value="">Select a category</mat-option>
+              @for (category of categories; track category) {
+                <mat-option [value]="category.toLowerCase()">{{ category }}</mat-option>
+              }
+            </mat-select>
+            @if (isFieldInvalid('category')) {
+              <mat-error>{{ getErrorMessage('category') }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <!-- Tags -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tags</mat-label>
+          <input matInput formControlName="tags" placeholder="e.g., planter, geometric, modern">
+          <mat-icon matPrefix>local_offer</mat-icon>
+          <mat-hint>Separate tags with commas</mat-hint>
+        </mat-form-field>
+
+        <!-- Tags Preview -->
+        @if (tagsArray.length > 0) {
+          <div class="tags-preview">
+            <span class="tags-label">Tags Preview:</span>
+            @for (tag of tagsArray; track tag) {
+              <mat-chip>{{ tag }}</mat-chip>
+            }
+          </div>
+        }
+
+        <mat-divider></mat-divider>
+
+        <!-- Image Upload Section -->
+        <div class="upload-section">
+          <h3>
+            <mat-icon>image</mat-icon>
+            Product Images *
+          </h3>
+          <p class="section-hint">Upload up to 5 images (JPG, PNG, WebP - max 5MB each)</p>
+
+          <!-- Image Drop Zone -->
+          <div
+            class="drop-zone"
+            [class.has-files]="imageFiles.length > 0"
+            (drop)="onDropImages($event)"
+            (dragover)="onDragOver($event)">
+
+            <div class="drop-zone-content" *ngIf="imageFiles.length === 0">
+              <mat-icon>cloud_upload</mat-icon>
+              <p>Drag & drop images here</p>
+              <span>or</span>
+              <label class="btn-browse">
+                Browse Files
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  (change)="onImagesSelected($event)"
+                  hidden>
+              </label>
+            </div>
+
+            <!-- Image Previews -->
+            <div class="image-previews" *ngIf="imageFiles.length > 0">
+              @for (file of imageFiles; track file.name; let i = $index) {
+                <div class="preview-item">
+                  <div class="preview-image">
+                    <img [src]="file.preview" [alt]="file.name">
+                    <button class="remove-btn" type="button" (click)="removeImage(i)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                  <span class="file-name" [matTooltip]="file.name">{{ file.name }}</span>
+                  <span class="file-size">{{ formatFileSize(file.size) }}</span>
+                </div>
+              }
+
+              @if (imageFiles.length < 5) {
+                <label class="add-more">
+                  <mat-icon>add</mat-icon>
+                  <span>Add More</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    (change)="onImagesSelected($event)"
+                    hidden>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- 3D Model Upload Section -->
+        <div class="upload-section">
+          <h3>
+            <mat-icon>3d_rotation</mat-icon>
+            3D Model File *
+          </h3>
+          <p class="section-hint">Upload your STL or OBJ file (max 50MB)</p>
+
+          <!-- Model Drop Zone -->
+          <div
+            class="drop-zone model-zone"
+            [class.has-file]="modelFile !== null"
+            (drop)="onDropModel($event)"
+            (dragover)="onDragOver($event)">
+
+            <div class="drop-zone-content" *ngIf="!modelFile">
+              <mat-icon>folder_open</mat-icon>
+              <p>Drag & drop your 3D model file</p>
+              <span>or</span>
+              <label class="btn-browse">
+                Browse File
+                <input
+                  type="file"
+                  accept=".stl,.obj"
+                  (change)="onModelSelected($event)"
+                  hidden>
+              </label>
+            </div>
+
+            <!-- Selected File -->
+            <div class="selected-file" *ngIf="modelFile">
+              <div class="file-icon">
+                <mat-icon>description</mat-icon>
+                <span class="file-type">{{ modelFile.type | uppercase }}</span>
+              </div>
+              <div class="file-info">
+                <span class="file-name">{{ modelFile.name }}</span>
+                <span class="file-size">{{ formatFileSize(modelFile.size) }}</span>
+              </div>
+              <button class="remove-btn" type="button" (click)="removeModel()">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <!-- Optional: Dimensions -->
+        <div class="optional-section" formGroupName="dimensions">
+          <h4>
+            <mat-icon>straighten</mat-icon>
+            Dimensions (optional)
+          </h4>
+          <div class="form-row three-col">
+            <mat-form-field appearance="outline">
+              <mat-label>Width (mm)</mat-label>
+              <input matInput type="number" formControlName="width" min="0">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Height (mm)</mat-label>
+              <input matInput type="number" formControlName="height" min="0">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Depth (mm)</mat-label>
+              <input matInput type="number" formControlName="depth" min="0">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Optional: Print Settings -->
+        <div class="optional-section" formGroupName="printSettings">
+          <h4>
+            <mat-icon>settings</mat-icon>
+            Print Settings (optional)
+          </h4>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Layer Height</mat-label>
+              <input matInput formControlName="layerHeight" placeholder="e.g., 0.2mm">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Infill</mat-label>
+              <input matInput formControlName="infill" placeholder="e.g., 20%">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Material</mat-label>
+              <input matInput formControlName="material" placeholder="e.g., PLA">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+          <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="isSubmitting"
+            class="submit-progress">
+          </mat-progress-bar>
+
+          <div class="action-buttons">
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="onCancel()"
+              [disabled]="isSubmitting">
+              Cancel
+            </button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="isSubmitting">
+              @if (isSubmitting) {
+                <mat-spinner diameter="20"></mat-spinner>
+                Uploading...
+              } @else {
+                <mat-icon>cloud_upload</mat-icon>
+                {{ submitLabel }}
+              }
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>

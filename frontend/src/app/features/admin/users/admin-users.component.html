@@ -1,0 +1,36 @@
+<div class="admin-users container">
+  <h1>Manage Users</h1>
+
+  @if (loading()) {
+    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+  } @else {
+    <div class="users-list">
+      @for (user of users(); track user._id) {
+        <mat-card class="user-card">
+          <div class="user-avatar">
+            @if (user.avatar) {
+              <img [src]="user.avatar" [alt]="user.name">
+            } @else {
+              <mat-icon>account_circle</mat-icon>
+            }
+          </div>
+          <div class="user-info">
+            <h3>{{ user.name }}</h3>
+            <p>{{ user.email }}</p>
+            <span class="role" [class]="'role-' + user.role">{{ user.role | titlecase }}</span>
+          </div>
+          <div class="user-actions">
+            <select [(value)]="selectedRoles[user._id]" (change)="changeRole(user._id, $event)">
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+              <option value="admin">Admin</option>
+            </select>
+            <button mat-stroked-button (click)="toggleStatus(user._id)">
+              {{ user.isActive ? 'Deactivate' : 'Activate' }}
+            </button>
+          </div>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,79 @@
+<div class="order-detail container">
+  @if (loading()) {
+    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+  } @else if (order()) {
+    <div class="breadcrumb">
+      <a routerLink="/orders">Orders</a>
+      <mat-icon>chevron_right</mat-icon>
+      <span>Order #{{ order()!._id.slice(-8) | uppercase }}</span>
+    </div>
+
+    <div class="order-content">
+      <div class="order-main">
+        <mat-card>
+          <h2>Items</h2>
+          <div class="items-list">
+            @for (item of order()!.items; track item._id) {
+              <div class="item">
+                <div class="item-image">
+                  @if (item.product?.thumbnail) {
+                    <img [src]="item.product.thumbnail" [alt]="item.product?.title">
+                  } @else {
+                    <mat-icon>3d_rotation</mat-icon>
+                  }
+                </div>
+                <div class="item-details">
+                  <h4>{{ item.product?.title }}</h4>
+                  <p>Quantity: {{ item.quantity }} x \${{ item.price.toFixed(2) }}</p>
+                </div>
+                <div class="item-actions">
+                  @if (!item.isDownloaded && canDownload()) {
+                    <button mat-stroked-button (click)="markDownloaded(item._id)">
+                      <mat-icon>download</mat-icon>
+                      Download
+                    </button>
+                  } @else if (item.isDownloaded) {
+                    <span class="downloaded">
+                      <mat-icon>check_circle</mat-icon>
+                      Downloaded
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </mat-card>
+      </div>
+
+      <div class="order-sidebar">
+        <mat-card>
+          <h3>Order Status</h3>
+          <p class="status" [class]="'status-' + order()!.status">{{ order()!.status | titlecase }}</p>
+          @if (order()!.trackingNumber) {
+            <p class="tracking">Tracking: {{ order()!.trackingNumber }}</p>
+          }
+        </mat-card>
+
+        <mat-card>
+          <h3>Shipping Address</h3>
+          <p>{{ order()!.shippingAddress.fullName }}</p>
+          <p>{{ order()!.shippingAddress.street }}</p>
+          <p>{{ order()!.shippingAddress.city }}, {{ order()!.shippingAddress.state }} {{ order()!.shippingAddress.zipCode }}</p>
+          <p>{{ order()!.shippingAddress.country }}</p>
+        </mat-card>
+
+        <mat-card>
+          <h3>Order Total</h3>
+          <div class="total-row">
+            <span>Subtotal</span>
+            <span>\${{ getSubtotal().toFixed(2) }}</span>
+          </div>
+          <div class="total-row grand">
+            <span>Total</span>
+            <span>\${{ order()!.totalAmount.toFixed(2) }}</span>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  }
+</div>

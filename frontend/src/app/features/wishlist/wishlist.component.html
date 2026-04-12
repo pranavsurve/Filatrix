@@ -1,0 +1,39 @@
+<div class="wishlist-container container">
+  <h1>My Wishlist</h1>
+
+  @if (loading()) {
+    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+  } @else if (products().length === 0) {
+    <div class="empty-state">
+      <mat-icon>favorite</mat-icon>
+      <h3>Your wishlist is empty</h3>
+      <p>Save items you love to your wishlist</p>
+      <a mat-raised-button color="primary" routerLink="/marketplace">Browse Marketplace</a>
+    </div>
+  } @else {
+    <div class="products-grid">
+      @for (product of products(); track product._id) {
+        <mat-card class="product-card" routerLink="/product/{{ product._id }}">
+          <div class="product-image">
+            @if (product.thumbnail) {
+              <img [src]="product.thumbnail" [alt]="product.title">
+            } @else {
+              <mat-icon>3d_rotation</mat-icon>
+            }
+          </div>
+          <mat-card-content>
+            <h3>{{ product.title }}</h3>
+            <p class="price">\${{ product.price.toFixed(2) }}</p>
+            <p class="seller">by {{ product.seller?.name }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button color="warn" (click)="removeFromWishlist(product._id, $event)">
+              <mat-icon>delete</mat-icon>
+              Remove
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,303 @@
+<div class="product-detail-container">
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading product details...</p>
+  </div>
+
+  <!-- Product Content -->
+  <div class="product-content" *ngIf="!loading && product">
+
+    <!-- Left Column: Image Gallery -->
+    <div class="product-gallery">
+      <div class="main-image">
+        <img
+          *ngIf="selectedImage"
+          [src]="selectedImage"
+          [alt]="product.title">
+        <div class="placeholder-image" *ngIf="!selectedImage">
+          <mat-icon>3d_rotation</mat-icon>
+          <span>3D Preview</span>
+        </div>
+      </div>
+
+      <div class="thumbnail-list" *ngIf="product.images?.length">
+        <button
+          *ngFor="let image of product.images; let i = index; trackBy: trackByReviewId"
+          class="thumbnail"
+          [class.active]="selectedImageIndex === i"
+          (click)="selectImage(i)">
+          <img [src]="image" [alt]="product.title + ' preview ' + (i + 1)">
+        </button>
+      </div>
+
+      <!-- 3D Viewer Placeholder -->
+      <div class="viewer-3d-placeholder">
+        <mat-icon>view_in_ar</mat-icon>
+        <span>3D Model Preview</span>
+        <p>Interactive 3D viewer coming soon</p>
+      </div>
+    </div>
+
+    <!-- Right Column: Product Info -->
+    <div class="product-info">
+
+      <!-- Title and Category -->
+      <div class="product-header">
+        <mat-chip *ngIf="product.category">{{ product.category }}</mat-chip>
+        <h1>{{ product.title }}</h1>
+      </div>
+
+      <!-- Rating -->
+      <div class="rating-section">
+        <div class="stars">
+          <mat-icon *ngFor="let star of getStarsArray(product.rating)" class="star-filled">star</mat-icon>
+          <mat-icon *ngFor="let star of getEmptyStars(product.rating)" class="star-empty">star_border</mat-icon>
+        </div>
+        <span class="rating-value">{{ product.rating.toFixed(1) }}</span>
+        <span class="review-count">({{ product.reviewCount }} reviews)</span>
+      </div>
+
+      <!-- Price -->
+      <div class="price-section">
+        <span class="price">${{ product.price | number:'1.2-2' }}</span>
+        <span class="file-types" *ngIf="product.fileTypes?.length">
+          {{ product.fileTypes.join(', ') | uppercase }} files included
+        </span>
+      </div>
+
+      <!-- Stock Status -->
+      <div class="stock-status" [class.in-stock]="product.inStock !== false">
+        <mat-icon>{{ product.inStock !== false ? 'check_circle' : 'cancel' }}</mat-icon>
+        <span>{{ product.inStock !== false ? 'In Stock' : 'Out of Stock' }}</span>
+      </div>
+
+      <!-- Tags -->
+      <div class="tags-section" *ngIf="product.tags?.length">
+        <mat-chip-set>
+          <mat-chip *ngFor="let tag of product.tags">{{ tag }}</mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Seller Info -->
+      <div class="seller-section">
+        <h3>Seller Information</h3>
+        <div class="seller-card">
+          <div class="seller-avatar">
+            <img
+              *ngIf="product.seller.avatar"
+              [src]="product.seller.avatar"
+              [alt]="product.seller.name">
+            <mat-icon *ngIf="!product.seller.avatar">account_circle</mat-icon>
+          </div>
+          <div class="seller-info">
+            <span class="seller-name">{{ product.seller.name }}</span>
+            <span class="seller-stats" *ngIf="product.seller.rating">
+              <mat-icon>star</mat-icon>
+              {{ product.seller.rating.toFixed(1) }} rating
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button
+          mat-raised-button
+          color="primary"
+          class="btn-cart"
+          [disabled]="product.inStock === false || isInCart"
+          (click)="onAddToCart()">
+          <mat-icon>{{ isInCart ? 'check' : 'add_shopping_cart' }}</mat-icon>
+          {{ isInCart ? 'Added to Cart' : 'Add to Cart' }}
+        </button>
+
+        <button
+          mat-stroked-button
+          class="btn-wishlist"
+          [class.active]="isInWishlist"
+          (click)="onToggleWishlist()">
+          <mat-icon>{{ isInWishlist ? 'favorite' : 'favorite_border' }}</mat-icon>
+          {{ isInWishlist ? 'In Wishlist' : 'Add to Wishlist' }}
+        </button>
+      </div>
+
+      <!-- Product Specs (if available) -->
+      <div class="product-specs" *ngIf="product.dimensions || product.printSettings">
+        <h3>Specifications</h3>
+
+        <div class="specs-grid">
+          <div class="spec-item" *ngIf="product.dimensions">
+            <span class="spec-label">Dimensions</span>
+            <span class="spec-value">
+              {{ formatDimension(product.dimensions.width) }} x
+              {{ formatDimension(product.dimensions.height) }} x
+              {{ formatDimension(product.dimensions.depth) }}
+            </span>
+          </div>
+
+          <ng-container *ngIf="product.printSettings">
+            <div class="spec-item" *ngIf="product.printSettings.layerHeight">
+              <span class="spec-label">Layer Height</span>
+              <span class="spec-value">{{ product.printSettings.layerHeight }}</span>
+            </div>
+            <div class="spec-item" *ngIf="product.printSettings.infill">
+              <span class="spec-label">Infill</span>
+              <span class="spec-value">{{ product.printSettings.infill }}</span>
+            </div>
+            <div class="spec-item" *ngIf="product.printSettings.material">
+              <span class="spec-label">Material</span>
+              <span class="spec-value">{{ product.printSettings.material }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Section: Description + Reviews -->
+  <mat-tab-group class="product-tabs" *ngIf="!loading && product">
+
+    <!-- Description Tab -->
+    <mat-tab label="Description">
+      <div class="tab-content">
+        <div class="description-content">
+          <h2>About this item</h2>
+          <p class="description-text">{{ product.description }}</p>
+
+          <div class="features-list" *ngIf="product.fileTypes?.length">
+            <h3>What's Included</h3>
+            <ul>
+              <li *ngFor="let fileType of product.fileTypes">
+                <mat-icon>check</mat-icon>
+                {{ fileType | uppercase }} 3D model file
+              </li>
+              <li>
+                <mat-icon>check</mat-icon>
+                Print settings guide
+              </li>
+            </ul>
+          </div>
+
+          <div class="usage-info">
+            <h3>How to Use</h3>
+            <ol>
+              <li>Download the file after purchase</li>
+              <li>Import into your 3D printing software</li>
+              <li>Adjust print settings as needed</li>
+              <li>Print and enjoy!</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Reviews Tab -->
+    <mat-tab [label]="'Reviews (' + reviews.length + ')'">
+      <div class="tab-content">
+        <div class="reviews-section">
+
+          <!-- Write Review Form -->
+          <div class="write-review" *ngIf="isAuthenticated">
+            <h3>Write a Review</h3>
+            <div class="review-form">
+              <div class="rating-input">
+                <label>Your Rating</label>
+                <div class="stars-input">
+                  <button
+                    *ngFor="let star of [1,2,3,4,5]; let i = index"
+                    mat-icon-button
+                    (click)="onReviewRatingChange(i + 1)">
+                    <mat-icon>
+                      {{ i < reviewRating ? 'star' : 'star_border' }}
+                    </mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Your Review (optional)</mat-label>
+                <textarea
+                  matInput
+                  [(ngModel)]="reviewComment"
+                  rows="4"
+                  placeholder="Share your experience with this product..."></textarea>
+              </mat-form-field>
+
+              <button
+                mat-raised-button
+                color="primary"
+                [disabled]="reviewRating === 0"
+                (click)="onSubmitReview()">
+                Submit Review
+              </button>
+            </div>
+          </div>
+
+          <!-- Reviews Summary -->
+          <div class="reviews-summary" *ngIf="reviews.length">
+            <div class="summary-header">
+              <h3>Customer Reviews</h3>
+              <div class="summary-stats">
+                <span class="avg-rating">{{ averageRating.toFixed(1) }}</span>
+                <div class="stars">
+                  <mat-icon *ngFor="let star of getStarsArray(averageRating)" class="star-filled">star</mat-icon>
+                  <mat-icon *ngFor="let star of getEmptyStars(averageRating)" class="star-empty">star_border</mat-icon>
+                </div>
+                <span class="total-reviews">{{ reviews.length }} reviews</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews List -->
+          <div class="reviews-list" *ngIf="reviews.length; else noReviews">
+            <mat-card class="review-card" *ngFor="let review of reviews; trackBy: trackByReviewId">
+              <mat-card-header>
+                <div class="reviewer-avatar">
+                  <img
+                    *ngIf="review.userAvatar"
+                    [src]="review.userAvatar"
+                    [alt]="review.userName">
+                  <mat-icon *ngIf="!review.userAvatar">account_circle</mat-icon>
+                </div>
+                <mat-card-title>{{ review.userName }}</mat-card-title>
+                <mat-card-subtitle>
+                  <div class="review-rating">
+                    <mat-icon *ngFor="let star of getReviewStarsArray(review.rating)" class="star-filled">star</mat-icon>
+                    <mat-icon *ngFor="let star of getEmptyReviewStars(review.rating)" class="star-empty">star_border</mat-icon>
+                  </div>
+                  <span class="review-date">{{ review.date | date:'mediumDate' }}</span>
+                  <mat-chip *ngIf="review.isVerifiedPurchase" class="verified-chip">
+                    <mat-icon>verified</mat-icon>
+                    Verified Purchase
+                  </mat-chip>
+                </mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content *ngIf="review.comment">
+                <p>{{ review.comment }}</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <!-- No Reviews State -->
+          <ng-template #noReviews>
+            <div class="no-reviews">
+              <mat-icon>rate_review</mat-icon>
+              <h3>No reviews yet</h3>
+              <p>Be the first to review this product!</p>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>
