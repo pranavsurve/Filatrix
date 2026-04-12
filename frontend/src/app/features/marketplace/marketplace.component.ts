@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductService } from '../../core/services/product.service';
 import { Product } from '../../shared/models/product.model';
 
@@ -25,7 +26,8 @@ import { Product } from '../../shared/models/product.model';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './marketplace.component.html',
   styleUrls: ['./marketplace.component.scss']

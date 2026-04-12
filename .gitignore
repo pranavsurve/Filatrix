@@ -1,0 +1,115 @@
+node_modules/
+.env
+uploads/
+*.log
+.DS_Store
+frontend/node_modules/
+.claude/settings.local.json
+frontend/.angular/cache/17.3.17/filatrix/.tsbuildinfo
+
+# ========================
+# Vite Cache (ADD THESE LINES)
+# ========================
+/.vite
+/vite.config.js.timestamp-*
+/node_modules/.vite
+/node_modules/.bin/vite
+frontend/.vite
+frontend/node_modules/.vite
+frontend/vite.config.js.timestamp-*
+
+# ========================
+# Angular Frontend
+# ========================
+/dist
+/.angular
+/.cache
+/.vscode
+
+# Dependencies
+/node_modules
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+
+# Build files
+*.tgz
+*.tar.gz
+
+# IDEs
+/.idea
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment files (except example)
+/.env
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+
+# Keep example env files
+!.env.example
+
+# ========================
+# Node.js Backend
+# ========================
+/node_modules
+/npm-debug.log
+/yarn-error.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+/coverage
+/.nyc_output
+
+# Dependency directories
+/node_modules/
+/jspm_packages/
+
+# Optional npm cache directory
+/.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+/.yarn-integrity
+
+# ========================
+# Angular Cache (FIX THIS SECTION)
+# ========================
+# Remove this line: frontend/.angular/cache/17.3.17/filatrix/.tsbuildinfo
+# And replace with:
+frontend/.angular/cache/
+frontend/.angular/compiler/
+frontend/.tsbuildinfo
+*.tsbuildinfo
+
+# ========================
+# Additional Vite Patterns
+# ========================
+*.tsbuildinfo
+vite.config.ts.timestamp-*
+vite.config.js.timestamp-*
+/dist
+/build
+/preview

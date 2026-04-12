@@ -51,7 +51,7 @@ export const routes: Routes = [
     canActivate: [sellerGuard],
     children: [
       { path: 'dashboard', loadComponent: () => import('./features/seller/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-      { path: 'products', loadComponent: () => import('./features/seller/products/products.component').then(m => m.SellerProductsComponent) },
+      { path: 'products', loadComponent: () => import('./features/seller/products/seller-products.component').then(m => m.SellerProductsComponent) },
       { path: 'products/new', loadComponent: () => import('./features/seller/product-form/product-form.component').then(m => m.ProductFormComponent) },
       { path: 'products/edit/:id', loadComponent: () => import('./features/seller/product-form/product-form.component').then(m => m.ProductFormComponent) },
       { path: 'orders', loadComponent: () => import('./features/seller/orders/seller-orders.component').then(m => m.SellerOrdersComponent) }

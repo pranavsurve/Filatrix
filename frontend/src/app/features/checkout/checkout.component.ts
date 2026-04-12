@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 import { OrderService } from '../../core/services/order.service';
 import { CartService } from '../../core/services/cart.service';
 import { CartItem } from '../../shared/models/cart.model';
@@ -24,7 +26,9 @@ import { CartItem } from '../../shared/models/cart.model';
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatDividerModule
   ],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
