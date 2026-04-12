@@ -1,0 +1,121 @@
+<div class="product-list-container">
+
+  <!-- Search and Filter Header -->
+  <div class="list-header" *ngIf="showSearch || showFilters">
+    <div class="search-section" *ngIf="showSearch">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search products</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()"
+          placeholder="Search by title...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-section" *ngIf="showFilters">
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange()">
+          <mat-option value="">All Categories</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="price-filter">
+        <label>Price Range</label>
+        <mat-slider
+          range
+          [min]="0"
+          [max]="maxPriceLimit"
+          [step]="10"
+          discrete>
+          <input matSliderStartThumb [(ngModel)]="priceRange.min" (ngModelChange)="onPriceChange()">
+          <input matSliderEndThumb [(ngModel)]="priceRange.max" (ngModelChange)="onPriceChange()">
+        </mat-slider>
+        <span class="price-range-label">
+          ${{ priceRange.min }} - ${{ priceRange.max }}
+        </span>
+      </div>
+
+      <button mat-stroked-button (click)="clearFilters()" class="clear-btn">
+        <mat-icon>clear</mat-icon>
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading products...</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && products.length === 0">
+    <mat-icon>inventory_2</mat-icon>
+    <h3>{{ emptyMessage }}</h3>
+    <p>Try adjusting your search or filter criteria</p>
+    <button mat-raised-button color="primary" (click)="clearFilters()">
+      Clear All Filters
+    </button>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" *ngIf="!loading && products.length > 0">
+    <mat-card
+      *ngFor="let product of products; trackBy: trackByProductId"
+      class="product-card"
+      (click)="onProductClick(product)">
+
+      <div class="product-image">
+        <img
+          *ngIf="product.imageUrl"
+          [src]="product.imageUrl"
+          [alt]="product.title">
+        <div class="placeholder-image" *ngIf="!product.imageUrl">
+          <mat-icon>3d_rotation</mat-icon>
+          <span>No Image</span>
+        </div>
+      </div>
+
+      <mat-card-content>
+        <h3 class="product-title">{{ product.title }}</h3>
+
+        <div class="product-meta">
+          <span class="price">${{ product.price | number:'1.2-2' }}</span>
+
+          <div class="rating" *ngIf="product.rating">
+            <mat-icon *ngFor="let star of getStarsArray(product.rating)" class="star-filled">star</mat-icon>
+            <mat-icon *ngFor="let star of getEmptyStars(product.rating)" class="star-empty">star_border</mat-icon>
+            <span class="rating-value">({{ formatRating(product.rating) }})</span>
+          </div>
+        </div>
+
+        <p class="seller" *ngIf="product.seller">
+          by {{ product.seller }}
+        </p>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-button
+          color="primary"
+          (click)="onViewDetails(product, $event)">
+          <mat-icon>visibility</mat-icon>
+          View Details
+        </button>
+
+        <button mat-icon-button color="accent" aria-label="Add to wishlist">
+          <mat-icon>favorite_border</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>
