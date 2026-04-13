@@ -7,7 +7,7 @@ export const routes: Routes = [
     loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent)
   },
   {
-    path: 'marketplace',
+    path: 'products',
     loadComponent: () => import('./features/marketplace/marketplace.component').then(m => m.MarketplaceComponent)
   },
   {

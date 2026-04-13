@@ -36,7 +36,7 @@ import { Subscription } from 'rxjs';
         </a>
 
         <div class="nav-links">
-          <a routerLink="/marketplace" routerLinkActive="active">Marketplace</a>
+          <a routerLink="/products" routerLinkActive="active">Products</a>
           <a routerLink="/wishlist" routerLinkActive="active" *ngIf="isAuthenticated()">
             <mat-icon [matBadge]="wishlistCount" [matBadgeHidden]="wishlistCount === 0" matBadgeColor="accent">favorite</mat-icon>
           </a>
@@ -60,7 +60,7 @@ import { Subscription } from 'rxjs';
               @if (isSeller()) {
                 <a routerLink="/seller/dashboard" mat-menu-item>
                   <mat-icon>store</mat-icon>
-                  Seller Dashboard
+                  Admin Dashboard
                 </a>
               }
               @if (isAdmin()) {
@@ -92,7 +92,7 @@ import { Subscription } from 'rxjs';
 
       <footer class="footer">
         <div class="container">
-          <p>&copy; 2024 Filatrix - 3D Print Marketplace</p>
+          <p>&copy; 2026 Filatrix - 3D Printed Products</p>
         </div>
       </footer>
     </div>

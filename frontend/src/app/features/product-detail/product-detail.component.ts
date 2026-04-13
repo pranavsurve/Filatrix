@@ -70,7 +70,7 @@ export class ProductDetailComponent implements OnInit {
       },
       error: () => {
         this.snackBar.open('Failed to load product', 'Close', { duration: 3000 });
-        this.router.navigate(['/marketplace']);
+        this.router.navigate(['/products']);
       }
     });
   }
