@@ -66,14 +66,14 @@
           @for (item of items(); track item._id) {
             <div class="order-item">
               <span class="item-name">{{ item.product?.title }} x {{ item.quantity }}</span>
-              <span class="item-price">\${{ ((item.product?.price || 0) * item.quantity).toFixed(2) }}</span>
+              <span class="item-price">${{ ((item.product?.price || 0) * item.quantity).toFixed(2) }}</span>
             </div>
           }
         </div>
         <mat-divider></mat-divider>
         <div class="summary-row total">
           <span>Total</span>
-          <span>\${{ total() | number:'1.2-2' }}</span>
+          <span>${{ total() | number:'1.2-2' }}</span>
         </div>
         <button mat-raised-button color="primary" (click)="placeOrder()" [disabled]="placingOrder()">
           {{ placingOrder() ? 'Processing...' : 'Place Order' }}

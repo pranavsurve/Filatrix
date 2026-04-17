@@ -58,7 +58,7 @@
         </div>
 
         <div class="price-section">
-          <span class="price">\${{ product()!.price.toFixed(2) }}</span>
+          <span class="price">${{ product()!.price.toFixed(2) }}</span>
           @if (product()!.fileType) {
             <span class="file-type">{{ product()!.fileType | uppercase }} files included</span>
           }

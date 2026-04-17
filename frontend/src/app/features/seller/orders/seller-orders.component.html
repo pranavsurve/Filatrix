@@ -21,13 +21,13 @@
             @for (item of order.items; track item._id) {
               <div class="item">
                 <span class="item-name">{{ item.product?.title }} x {{ item.quantity }}</span>
-                <span class="item-price">\${{ (item.price * item.quantity).toFixed(2) }}</span>
+                <span class="item-price">${{ (item.price * item.quantity).toFixed(2) }}</span>
               </div>
             }
           </div>
           <div class="order-footer">
             <span>{{ order.createdAt | date:'medium' }}</span>
-            <span class="total">Total: \${{ order.totalAmount.toFixed(2) }}</span>
+            <span class="total">Total: ${{ order.totalAmount.toFixed(2) }}</span>
           </div>
         </mat-card>
       }

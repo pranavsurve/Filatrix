@@ -26,7 +26,7 @@
             </div>
             <div class="item-details">
               <h3>{{ item.product?.title }}</h3>
-              <p class="price">\${{ item.product?.price?.toFixed(2) }}</p>
+              <p class="price">${{ item.product?.price?.toFixed(2) }}</p>
             </div>
             <div class="item-quantity">
               <button mat-icon-button (click)="decrementQuantity(item)" [disabled]="item.quantity <= 1">
@@ -38,7 +38,7 @@
               </button>
             </div>
             <div class="item-subtotal">
-              \${{ (item.product?.price || 0) * item.quantity | number:'1.2-2' }}
+              ${{ (item.product?.price || 0) * item.quantity | number:'1.2-2' }}
             </div>
             <button mat-icon-button color="warn" (click)="removeItem(item._id)">
               <mat-icon>delete</mat-icon>
@@ -51,7 +51,7 @@
         <h2>Summary</h2>
         <div class="summary-row">
           <span>Subtotal ({{ items().length }} items)</span>
-          <span>\${{ subtotal() | number:'1.2-2' }}</span>
+          <span>${{ subtotal() | number:'1.2-2' }}</span>
         </div>
         <div class="summary-row">
           <span>Shipping</span>
@@ -60,7 +60,7 @@
         <mat-divider></mat-divider>
         <div class="summary-row total">
           <span>Total</span>
-          <span>\${{ subtotal() | number:'1.2-2' }}</span>
+          <span>${{ subtotal() | number:'1.2-2' }}</span>
         </div>
         <a mat-raised-button color="primary" routerLink="/checkout" class="checkout-btn">
           Proceed to Checkout

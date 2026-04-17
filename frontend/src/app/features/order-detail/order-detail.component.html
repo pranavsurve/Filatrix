@@ -24,7 +24,7 @@
                 </div>
                 <div class="item-details">
                   <h4>{{ item.product?.title }}</h4>
-                  <p>Quantity: {{ item.quantity }} x \${{ item.price.toFixed(2) }}</p>
+                  <p>Quantity: {{ item.quantity }} x ${{ item.price.toFixed(2) }}</p>
                 </div>
                 <div class="item-actions">
                   @if (!item.isDownloaded && canDownload()) {
@@ -66,11 +66,11 @@
           <h3>Order Total</h3>
           <div class="total-row">
             <span>Subtotal</span>
-            <span>\${{ getSubtotal().toFixed(2) }}</span>
+            <span>${{ getSubtotal().toFixed(2) }}</span>
           </div>
           <div class="total-row grand">
             <span>Total</span>
-            <span>\${{ order()!.totalAmount.toFixed(2) }}</span>
+            <span>${{ order()!.totalAmount.toFixed(2) }}</span>
           </div>
         </mat-card>
       </div>

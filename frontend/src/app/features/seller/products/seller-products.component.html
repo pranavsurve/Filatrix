@@ -28,7 +28,7 @@
           </div>
           <div class="product-info">
             <h3>{{ product.title }}</h3>
-            <p class="price">\${{ product.price.toFixed(2) }}</p>
+            <p class="price">${{ product.price.toFixed(2) }}</p>
             <span class="status" [class]="'status-' + product.status">{{ product.status }}</span>
           </div>
           <div class="product-actions">

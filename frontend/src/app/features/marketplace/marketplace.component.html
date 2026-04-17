@@ -62,7 +62,7 @@
               </div>
             }
             <div class="absolute inset-0 z-20 flex items-center justify-center gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
-              <button mat-flat-button color="primary" class="!px-4 !py-2 !text-sm !font-medium">View</button>
+              <button mat-flat-button color="primary" class="!px-4 !py-2 !text-sm !font-medium" [routerLink]="['/product', product._id]">View</button>
               <button mat-stroked-button class="!px-4 !py-2 !text-sm !font-medium !border-white !text-white hover:!bg-white/10" (click)="$event.stopPropagation(); $event.preventDefault()">
                 <mat-icon class="!text-base">favorite_border</mat-icon>
               </button>
@@ -71,7 +71,7 @@
           <mat-card-content class="!p-4">
             <h3 class="!text-base !font-semibold !mb-1 line-clamp-2">{{ product.title }}</h3>
             <div class="product-meta flex items-center gap-3 mb-2">
-              <span class="price !text-lg !font-bold text-indigo-600">\${{ product.price.toFixed(2) }}</span>
+              <span class="price !text-lg !font-bold text-indigo-600">${{ product.price.toFixed(2) }}</span>
               @if (product.averageRating > 0) {
                 <span class="rating flex items-center gap-1 text-amber-500">
                   <mat-icon class="!text-sm !w-4 !h-4">star</mat-icon>
