@@ -1,12 +1,12 @@
-<div class="marketplace container mx-auto max-w-6xl px-4">
-  <header class="page-header text-center mb-8">
-    <h1 class="text-4xl font-bold mb-2">3D Print Products</h1>
-    <p class="text-gray-600">Discover unique 3D printed objects crafted with precision</p>
+<div class="marketplace container mx-auto max-w-7xl px-4">
+  <header class="page-header text-center mb-12">
+    <h1 class="text-4xl font-bold mb-3 bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">3D Print Products</h1>
+    <p class="text-slate-400 text-lg">Discover unique 3D printed objects crafted with precision</p>
   </header>
 
-  <div class="filters flex flex-wrap gap-4 mb-8">
+  <div class="filters flex flex-wrap gap-4 mb-10">
     <mat-form-field appearance="outline" class="flex-1 min-w-40">
-      <mat-label>Category</mat-label>
+      <mat-label class="text-slate-400">Category</mat-label>
       <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
         <mat-option value="">All Categories</mat-option>
         <mat-option value="art">Art & Sculpture</mat-option>
@@ -19,7 +19,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="flex-1 min-w-40">
-      <mat-label>Sort By</mat-label>
+      <mat-label class="text-slate-400">Sort By</mat-label>
       <mat-select [(ngModel)]="sortBy" (ngModelChange)="onFilterChange()">
         <mat-option value="">Newest</mat-option>
         <mat-option value="price_asc">Price: Low to High</mat-option>
@@ -30,69 +30,84 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="flex-[2] min-w-60">
-      <mat-label>Search</mat-label>
-      <input matInput [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" placeholder="Search products...">
-      <button matSuffix mat-icon-button (click)="onSearch()">
+      <mat-label class="text-slate-400">Search products...</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" class="text-slate-200">
+      <button matSuffix mat-icon-button (click)="onSearch()" class="text-slate-400 hover:text-indigo-400 transition-colors">
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>
   </div>
 
   @if (loading()) {
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
     </div>
   } @else if (products().length === 0) {
-    <div class="empty-state text-center py-16 px-8">
-      <mat-icon class="!text-6xl !w-16 !h-16 text-gray-300 mb-4">search_off</mat-icon>
-      <h3 class="text-xl font-semibold mb-2">No products found</h3>
-      <p class="text-gray-500 mb-4">Try adjusting your filters or search terms</p>
+    <div class="empty-state text-center py-20 px-8">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">search_off</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-2">No products found</h3>
+      <p class="text-slate-500 mb-6">Try adjusting your filters or search terms</p>
     </div>
   } @else {
-    <div class="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+    <div class="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
       @for (product of products(); track product._id) {
-        <mat-card class="product-card group relative overflow-hidden rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 ease-out hover:-translate-y-1 cursor-pointer">
+        <mat-card class="product-card group relative overflow-hidden rounded-2xl !bg-slate-800/60 !backdrop-blur-md !border border-white/5 hover:!border-indigo-500/30 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-1 cursor-pointer animate-fade-in">
+          <!-- Product Image -->
           <div class="product-image relative overflow-hidden">
-            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 ease-out z-10"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             @if (product.thumbnail) {
-              <img [src]="product.thumbnail" [alt]="product.title" class="w-full h-52 object-cover transition-transform duration-500 ease-out group-hover:scale-105">
+              <img [src]="product.thumbnail" [alt]="product.title" class="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-110">
             } @else {
-              <div class="placeholder-image">
-                <mat-icon>3d_rotation</mat-icon>
+              <div class="placeholder-image w-full h-52 flex items-center justify-center bg-slate-800/50">
+                <mat-icon class="!text-5xl !w-12 !h-12 text-slate-600">3d_rotation</mat-icon>
               </div>
             }
-            <div class="absolute inset-0 z-20 flex items-center justify-center gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
-              <button mat-flat-button color="primary" class="!px-4 !py-2 !text-sm !font-medium" [routerLink]="['/product', product._id]">View</button>
-              <button mat-stroked-button class="!px-4 !py-2 !text-sm !font-medium !border-white !text-white hover:!bg-white/10" (click)="$event.stopPropagation(); $event.preventDefault()">
+            <!-- Hover Overlay -->
+            <div class="absolute inset-0 z-20 flex items-center justify-center gap-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              <a [routerLink]="['/product', product._id]" mat-flat-button class="!bg-indigo-600/90 !text-white !font-medium hover:!bg-indigo-500/90 transition-colors !px-4 !py-2 !text-sm">
+                View
+              </a>
+              <button mat-icon-button class="!bg-slate-700/80 !text-white hover:!bg-slate-600/80 transition-colors" (click)="onToggleWishlist(product, $event)">
                 <mat-icon class="!text-base">favorite_border</mat-icon>
               </button>
             </div>
           </div>
+
+          <!-- Product Info -->
           <mat-card-content class="!p-4">
-            <h3 class="!text-base !font-semibold !mb-1 line-clamp-2">{{ product.title }}</h3>
+            <h3 class="!text-base !font-semibold !mb-2 !text-slate-100 line-clamp-2">{{ product.title }}</h3>
             <div class="product-meta flex items-center gap-3 mb-2">
-              <span class="price !text-lg !font-bold text-indigo-600">${{ product.price.toFixed(2) }}</span>
+              <span class="price !text-lg !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${{ product.price.toFixed(2) }}</span>
               @if (product.averageRating > 0) {
-                <span class="rating flex items-center gap-1 text-amber-500">
-                  <mat-icon class="!text-sm !w-4 !h-4">star</mat-icon>
-                  {{ product.averageRating.toFixed(1) }}
+                <span class="rating flex items-center gap-1 text-amber-400">
+                  <mat-icon class="!text-sm !w-4 !h-4 text-amber-400">star</mat-icon>
+                  <span class="text-xs text-slate-400">{{ product.averageRating.toFixed(1) }}</span>
                 </span>
               }
             </div>
-            <p class="seller !text-sm !text-gray-500 !mb-3">by {{ product.seller?.name || 'Filatrix' }}</p>
+            <p class="seller !text-sm !text-slate-500 !mb-3">by {{ product.seller?.name || 'Filatrix' }}</p>
             @if (product.tags?.length) {
               <div class="tags flex flex-wrap gap-1">
                 @for (tag of product.tags?.slice(0, 3); track tag) {
-                  <span class="tag !text-xs !px-2 !py-0.5 !bg-gray-100 !rounded">#{{ tag }}</span>
+                  <span class="tag !text-xs !px-2 !py-0.5 !bg-indigo-500/10 !text-indigo-300 !rounded-full border border-indigo-500/20">#{{ tag }}</span>
                 }
               </div>
             }
           </mat-card-content>
+
+          <!-- Add to Cart Action -->
+          <mat-card-actions class="!px-4 !pb-4 !pt-0">
+            <button mat-flat-button class="!w-full !flex-1 !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !font-semibold !rounded-xl hover:!from-indigo-500 hover:!to-purple-500 !transition-all !duration-300 !shadow-lg !shadow-indigo-500/20 hover:!shadow-indigo-500/30" (click)="onAddToCart(product, $event)">
+              <mat-icon class="!text-base !mr-1">shopping_cart</mat-icon>
+              Add to Cart
+            </button>
+          </mat-card-actions>
         </mat-card>
       }
     </div>
 
     <mat-paginator
+      class="!bg-transparent"
       [length]="pagination().total"
       [pageSize]="pagination().limit"
       [pageSizeOptions]="[12, 24, 48]"

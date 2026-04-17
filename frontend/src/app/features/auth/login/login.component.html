@@ -1,21 +1,21 @@
-<div class="auth-container">
-  <mat-card class="auth-card">
-    <mat-card-header>
-      <mat-card-title>Welcome Back</mat-card-title>
-      <mat-card-subtitle>Login to your Filatrix account</mat-card-subtitle>
+<div class="auth-container min-h-[70vh] flex items-center justify-center p-6">
+  <mat-card class="auth-card glass-card !w-full !max-w-md">
+    <mat-card-header class="!mb-6">
+      <mat-card-title class="!text-2xl !font-bold !text-slate-100">Welcome Back</mat-card-title>
+      <mat-card-subtitle class="!text-slate-400 !mt-1">Login to your Filatrix account</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" [(ngModel)]="email" name="email" required>
+      <form (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        <mat-form-field appearance="outline" class="!w-full">
+          <mat-label class="text-slate-400">Email</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="email" required class="text-slate-200">
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required>
-          <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
+        <mat-form-field appearance="outline" class="!w-full">
+          <mat-label class="text-slate-400">Password</mat-label>
+          <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required class="text-slate-200">
+          <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" class="text-slate-400 hover:text-indigo-400 transition-colors">
             <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
         </mat-form-field>
@@ -24,13 +24,13 @@
           <div class="error-message">{{ error() }}</div>
         }
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+        <button mat-raised-button type="submit" [disabled]="loading()" class="!w-full !h-12 !text-base !font-semibold !rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/20">
           {{ loading() ? 'Logging in...' : 'Login' }}
         </button>
       </form>
 
-      <div class="auth-footer">
-        <p>Don't have an account? <a routerLink="/auth/register">Sign up</a></p>
+      <div class="auth-footer !mt-6 !text-center !text-slate-400">
+        <p>Don't have an account? <a routerLink="/auth/register" class="!text-indigo-400 hover:!text-indigo-300 !no-underline hover:!underline transition-colors">Sign up</a></p>
       </div>
     </mat-card-content>
   </mat-card>

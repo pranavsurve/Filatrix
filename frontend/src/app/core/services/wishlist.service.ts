@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { constService } from './const.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WishlistService {
+   wishlistCountSubject = new BehaviorSubject<number>(0);
+  wishlistCount$ = this.wishlistCountSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
   getWishlist(): Observable<{ wishlist: any }> {
@@ -30,5 +33,9 @@ export class WishlistService {
     return this.http.delete<{ message: string }>(
       `${constService.API_URL}/wishlist`
     );
+  }
+
+  updateWishlistCount(count: number): void {
+    this.wishlistCountSubject.next(count);
   }
 }
