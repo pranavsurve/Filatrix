@@ -1,41 +1,61 @@
-<div class="orders-container container">
-  <h1>My Orders</h1>
+<div class="orders-container container max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">My Orders</h1>
 
   @if (loading()) {
-    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
   } @else if (orders().length === 0) {
-    <div class="empty-state">
-      <mat-icon>receipt_long</mat-icon>
-      <h3>No orders yet</h3>
-      <p>Start shopping to see your orders here</p>
-      <a mat-raised-button color="primary" routerLink="/products">Browse Products</a>
+    <div class="empty-state text-center py-20 px-8 glass-card">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">receipt_long</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-2">No orders yet</h3>
+      <p class="text-slate-500 mb-6">Start shopping to see your orders here</p>
+      <a mat-raised-button routerLink="/products" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all">Browse Products</a>
     </div>
   } @else {
-    <div class="orders-list">
+    <div class="orders-list flex flex-col gap-4">
       @for (order of orders(); track order._id) {
-        <mat-card class="order-card" routerLink="/order/{{ order._id }}">
-          <div class="order-header">
-            <span class="order-id">Order #{{ order._id.slice(-8) | uppercase }}</span>
-            <span class="order-status" [class]="'status-' + order.status">{{ order.status }}</span>
+        <mat-card routerLink="/order/{{ order._id }}" class="order-card cursor-pointer !bg-slate-800/60 !backdrop-blur-md !border !border-white/5 hover:!border-indigo-500/30 !rounded-2xl !p-5 !transition-all !duration-300 hover:-translate-y-0.5">
+          <div class="order-header flex justify-between items-center mb-4">
+            <span class="order-id !font-semibold !text-slate-200">Order #{{ order._id.slice(-8) | uppercase }}</span>
+            <!-- <span class="order-status !px-3 !py-1 !rounded-full !text-xs !font-semibold"
+
+              [class.!bg-amber-500/10.!text-amber-400.!border.!border-amber-500/20]="order.status === 'pending'"
+              [class.!bg-blue-500/10.!text-blue-400.!border.!border-blue-500/20]="order.status === 'paid' || order.status === 'processing'"
+              [class.!bg-green-500/10.!text-green-400.!border.!border-green-500/20]="order.status === 'shipped' || order.status === 'delivered'"
+              [class.!bg-red-500/10.!text-red-400.!border.!border-red-500/20]="order.status === 'cancelled'">
+              {{ order.status }}
+            </span> -->
+            <span
+  class="order-status !px-3 !py-1 !rounded-full !text-xs !font-semibold"
+  [ngClass]="{
+    '!bg-amber-500/10 !text-amber-400 !border !border-amber-500/20': order.status === 'pending',
+    '!bg-blue-500/10 !text-blue-400 !border !border-blue-500/20': order.status === 'paid' || order.status === 'processing',
+    '!bg-green-500/10 !text-green-400 !border !border-green-500/20': order.status === 'shipped' || order.status === 'delivered',
+    '!bg-red-500/10 !text-red-400 !border !border-red-500/20': order.status === 'cancelled'
+  }"
+>
+  {{ order.status }}
+</span>
           </div>
-          <div class="order-items">
+          <div class="order-items flex flex-wrap gap-4 mb-4">
             @for (item of order.items?.slice(0, 3); track item._id) {
-              <div class="order-item">
+              <div class="order-item flex items-center gap-2">
                 @if (item.product?.thumbnail) {
-                  <img [src]="item.product.thumbnail" [alt]="item.product?.title">
+                  <img [src]="item.product.thumbnail" [alt]="item.product?.title" class="!w-10 !h-10 !rounded-lg !object-cover">
                 } @else {
-                  <mat-icon>3d_rotation</mat-icon>
+                  <mat-icon class="!text-slate-600">3d_rotation</mat-icon>
                 }
-                <span>{{ item.product?.title }} x {{ item.quantity }}</span>
+                <span class="!text-sm !text-slate-300">{{ item.product?.title }} x {{ item.quantity }}</span>
               </div>
             }
             @if ((order.items?.length || 0) > 3) {
-              <span class="more-items">+{{ order.items!.length - 3 }} more</span>
+              <span class="more-items !text-sm !text-slate-500 !self-center">+{{ order.items!.length - 3 }} more</span>
             }
           </div>
-          <div class="order-footer">
-            <span class="order-date">{{ order.createdAt | date:'medium' }}</span>
-            <span class="order-total">${{ order.totalAmount.toFixed(2) }}</span>
+          <div class="order-footer flex justify-between !text-sm">
+            <span class="order-date !text-slate-500">{{ order.createdAt | date:'medium' }}</span>
+            <span class="order-total !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${{ order.totalAmount.toFixed(2) }}</span>
           </div>
         </mat-card>
       }

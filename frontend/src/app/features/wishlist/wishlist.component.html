@@ -1,34 +1,36 @@
-<div class="wishlist-container container">
-  <h1>My Wishlist</h1>
+<div class="wishlist-container container max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">My Wishlist</h1>
 
   @if (loading()) {
-    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
   } @else if (products().length === 0) {
-    <div class="empty-state">
-      <mat-icon>favorite</mat-icon>
-      <h3>Your wishlist is empty</h3>
-      <p>Save items you love to your wishlist</p>
-      <a mat-raised-button color="primary" routerLink="/products">Browse Products</a>
+    <div class="empty-state text-center py-20 px-8 glass-card">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">favorite</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-2">Your wishlist is empty</h3>
+      <p class="text-slate-500 mb-6">Save items you love to your wishlist</p>
+      <a mat-raised-button routerLink="/products" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all !px-6 !py-2">Browse Products</a>
     </div>
   } @else {
-    <div class="products-grid">
+    <div class="products-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       @for (product of products(); track product._id) {
-        <mat-card class="product-card" routerLink="/product/{{ product._id }}">
-          <div class="product-image">
+        <mat-card routerLink="/product/{{ product._id }}" class="product-card group cursor-pointer !bg-slate-800/60 !backdrop-blur-md !border !border-white/5 hover:!border-indigo-500/30 !rounded-2xl !overflow-hidden !transition-all !duration-300 hover:-translate-y-1">
+          <div class="product-image h-44 bg-slate-700/50 flex items-center justify-center">
             @if (product.thumbnail) {
-              <img [src]="product.thumbnail" [alt]="product.title">
+              <img [src]="product.thumbnail" [alt]="product.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
             } @else {
-              <mat-icon>3d_rotation</mat-icon>
+              <mat-icon class="!text-5xl !w-12 !h-12 text-slate-600">3d_rotation</mat-icon>
             }
           </div>
-          <mat-card-content>
-            <h3>{{ product.title }}</h3>
-            <p class="price">${{ product.price.toFixed(2) }}</p>
-            <p class="seller">by {{ product.seller?.name }}</p>
+          <mat-card-content class="!p-4">
+            <h3 class="!text-base !font-semibold !text-slate-100 !mb-1 !line-clamp-2">{{ product.title }}</h3>
+            <p class="price !text-lg !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent !mb-1">${{ product.price.toFixed(2) }}</p>
+            <p class="seller !text-sm !text-slate-500">by {{ product.seller?.name || 'Filatrix' }}</p>
           </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="warn" (click)="removeFromWishlist(product._id, $event)">
-              <mat-icon>delete</mat-icon>
+          <mat-card-actions class="!px-4 !pb-4">
+            <button mat-button color="warn" (click)="removeFromWishlist(product._id, $event)" class="!text-pink-400 hover:!text-pink-300">
+              <mat-icon class="!text-base">delete</mat-icon>
               Remove
             </button>
           </mat-card-actions>

@@ -1,81 +1,81 @@
-<div class="checkout-container container">
-  <h1>Checkout</h1>
+<div class="checkout-container container max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">Checkout</h1>
 
   @if (loading()) {
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
     </div>
   } @else if (items().length === 0) {
-    <div class="empty-checkout">
-      <mat-icon>shopping_cart</mat-icon>
-      <h3>Your cart is empty</h3>
-      <a mat-button routerLink="/products">Continue Shopping</a>
+    <div class="empty-checkout text-center py-20 px-8 glass-card">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">shopping_cart</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-4">Your cart is empty</h3>
+      <a mat-stroked-button routerLink="/products" class="!rounded-xl !text-slate-300 !border-slate-600 hover:!bg-slate-800/50">Continue Shopping</a>
     </div>
   } @else {
-    <div class="checkout-content">
-      <div class="checkout-form">
-        <mat-card>
-          <h2>Shipping Address</h2>
-          <form>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Full Name</mat-label>
-              <input matInput [(ngModel)]="shippingAddress.fullName" name="fullName" required>
+    <div class="checkout-content grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
+      <div class="checkout-form flex flex-col gap-6">
+        <mat-card class="glass-card !p-6">
+          <h2 class="!text-xl !font-bold !text-slate-100 !mb-5">Shipping Address</h2>
+          <form class="flex flex-col gap-4">
+            <mat-form-field appearance="outline" class="!w-full">
+              <mat-label class="text-slate-400">Full Name</mat-label>
+              <input matInput [(ngModel)]="shippingAddress.fullName" name="fullName" required class="text-slate-200">
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Street Address</mat-label>
-              <input matInput [(ngModel)]="shippingAddress.street" name="street" required>
+            <mat-form-field appearance="outline" class="!w-full">
+              <mat-label class="text-slate-400">Street Address</mat-label>
+              <input matInput [(ngModel)]="shippingAddress.street" name="street" required class="text-slate-200">
             </mat-form-field>
 
-            <div class="form-row">
+            <div class="form-row grid grid-cols-2 gap-4">
               <mat-form-field appearance="outline">
-                <mat-label>City</mat-label>
-                <input matInput [(ngModel)]="shippingAddress.city" name="city" required>
+                <mat-label class="text-slate-400">City</mat-label>
+                <input matInput [(ngModel)]="shippingAddress.city" name="city" required class="text-slate-200">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>State</mat-label>
-                <input matInput [(ngModel)]="shippingAddress.state" name="state" required>
+                <mat-label class="text-slate-400">State</mat-label>
+                <input matInput [(ngModel)]="shippingAddress.state" name="state" required class="text-slate-200">
               </mat-form-field>
             </div>
 
-            <div class="form-row">
+            <div class="form-row grid grid-cols-2 gap-4">
               <mat-form-field appearance="outline">
-                <mat-label>ZIP Code</mat-label>
-                <input matInput [(ngModel)]="shippingAddress.zipCode" name="zipCode" required>
+                <mat-label class="text-slate-400">ZIP Code</mat-label>
+                <input matInput [(ngModel)]="shippingAddress.zipCode" name="zipCode" required class="text-slate-200">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
-                <mat-label>Country</mat-label>
-                <input matInput [(ngModel)]="shippingAddress.country" name="country" required>
+                <mat-label class="text-slate-400">Country</mat-label>
+                <input matInput [(ngModel)]="shippingAddress.country" name="country" required class="text-slate-200">
               </mat-form-field>
             </div>
           </form>
         </mat-card>
 
-        <mat-card>
-          <h2>Payment Method</h2>
-          <p>Payment integration with Stripe coming soon.</p>
-          <p>For demo purposes, clicking "Place Order" will simulate a successful payment.</p>
+        <mat-card class="glass-card !p-6">
+          <h2 class="!text-xl !font-bold !text-slate-100 !mb-3">Payment Method</h2>
+          <p class="!text-slate-400 !mb-2">Payment integration with Stripe coming soon.</p>
+          <p class="!text-slate-500 !text-sm">For demo purposes, clicking "Place Order" will simulate a successful payment.</p>
         </mat-card>
       </div>
 
-      <mat-card class="order-summary">
-        <h2>Order Summary</h2>
-        <div class="items-list">
+      <mat-card class="glass-card !p-6 !h-fit lg:sticky lg:top-20">
+        <h2 class="!text-xl !font-bold !text-slate-100 !mb-4">Order Summary</h2>
+        <div class="items-list flex flex-col gap-2 mb-4">
           @for (item of items(); track item._id) {
-            <div class="order-item">
-              <span class="item-name">{{ item.product?.title }} x {{ item.quantity }}</span>
-              <span class="item-price">${{ ((item.product?.price || 0) * item.quantity).toFixed(2) }}</span>
+            <div class="order-item flex justify-between py-2 border-b border-white/5 last:border-0">
+              <span class="item-name !text-sm !text-slate-300 !truncate !max-w-[200px]">{{ item.product?.title }} x {{ item.quantity }}</span>
+              <span class="item-price !text-sm !font-medium !text-slate-200">${{ ((item.product?.price || 0) * item.quantity).toFixed(2) }}</span>
             </div>
           }
         </div>
-        <mat-divider></mat-divider>
-        <div class="summary-row total">
-          <span>Total</span>
-          <span>${{ total() | number:'1.2-2' }}</span>
+        <mat-divider class="!border-slate-700/50 !my-3"></mat-divider>
+        <div class="summary-row total flex justify-between py-3">
+          <span class="!text-slate-300">Total</span>
+          <span class="!text-xl !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${{ total() | number:'1.2-2' }}</span>
         </div>
-        <button mat-raised-button color="primary" (click)="placeOrder()" [disabled]="placingOrder()">
+        <button mat-raised-button (click)="placeOrder()" [disabled]="placingOrder()" class="!w-full !mt-4 !h-12 !text-base !font-semibold !rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/20">
           {{ placingOrder() ? 'Processing...' : 'Place Order' }}
         </button>
       </mat-card>

@@ -1,47 +1,31 @@
 .dashboard-container {
-  h1 { margin-bottom: 2rem; }
-
   .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
     margin-bottom: 2rem;
+
+    @media (max-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .stat-card {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
+    transition: all 0.2s ease;
 
-    mat-icon {
-      font-size: 2.5rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      color: #3f51b5;
-    }
-
-    &.pending mat-icon { color: #ff9800; }
-
-    .stat-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stat-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-    }
-
-    .stat-label {
-      color: #666;
-      font-size: 0.875rem;
+    &:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
     }
   }
 
   .actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    @media (max-width: 480px) {
+      flex-direction: column;
+      a { width: 100%; justify-content: center; }
+    }
   }
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 5rem;
 }

@@ -1,40 +1,42 @@
-<div class="order-detail container">
+<div class="order-detail container max-w-5xl mx-auto px-4 py-8">
   @if (loading()) {
-    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
   } @else if (order()) {
-    <div class="breadcrumb">
-      <a routerLink="/orders">Orders</a>
-      <mat-icon>chevron_right</mat-icon>
-      <span>Order #{{ order()!._id.slice(-8) | uppercase }}</span>
+    <div class="breadcrumb flex items-center gap-2 mb-8 text-sm">
+      <a routerLink="/orders" class="text-indigo-400 hover:text-indigo-300 no-underline transition-colors">Orders</a>
+      <mat-icon class="!text-sm !w-4 !h-4 text-slate-500">chevron_right</mat-icon>
+      <span class="text-slate-400">Order #{{ order()!._id.slice(-8) | uppercase }}</span>
     </div>
 
-    <div class="order-content">
-      <div class="order-main">
-        <mat-card>
-          <h2>Items</h2>
-          <div class="items-list">
+    <div class="order-content grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
+      <div class="order-main flex flex-col gap-5">
+        <mat-card class="glass-card !p-6">
+          <h2 class="!text-xl !font-bold !text-slate-100 !mb-5">Items</h2>
+          <div class="items-list flex flex-col">
             @for (item of order()!.items; track item._id) {
-              <div class="item">
-                <div class="item-image">
+              <div class="item flex items-center gap-4 py-4 border-b border-white/5 last:border-0">
+                <div class="item-image w-16 h-16 rounded-xl overflow-hidden bg-slate-700/50 flex items-center justify-center flex-shrink-0">
                   @if (item.product?.thumbnail) {
-                    <img [src]="item.product.thumbnail" [alt]="item.product?.title">
+                    <img [src]="item.product.thumbnail" [alt]="item.product?.title" class="w-full h-full object-cover">
                   } @else {
-                    <mat-icon>3d_rotation</mat-icon>
+                    <mat-icon class="text-slate-500">3d_rotation</mat-icon>
                   }
                 </div>
-                <div class="item-details">
-                  <h4>{{ item.product?.title }}</h4>
-                  <p>Quantity: {{ item.quantity }} x ${{ item.price.toFixed(2) }}</p>
+                <div class="item-details flex-1 min-w-0">
+                  <h4 class="!text-base !font-semibold !text-slate-200 !mb-1">{{ item.product?.title }}</h4>
+                  <p class="!text-sm !text-slate-500">Qty: {{ item.quantity }} x ${{ item.price.toFixed(2) }}</p>
                 </div>
-                <div class="item-actions">
+                <div class="item-actions flex-shrink-0">
                   @if (!item.isDownloaded && canDownload()) {
-                    <button mat-stroked-button (click)="markDownloaded(item._id)">
-                      <mat-icon>download</mat-icon>
+                    <button mat-stroked-button class="!rounded-lg !text-slate-300 !border-slate-600 hover:!bg-slate-800/50" (click)="markDownloaded(item._id)">
+                      <mat-icon class="!text-base">download</mat-icon>
                       Download
                     </button>
                   } @else if (item.isDownloaded) {
-                    <span class="downloaded">
-                      <mat-icon>check_circle</mat-icon>
+                    <span class="downloaded flex items-center gap-1.5 !text-sm !text-green-400">
+                      <mat-icon class="!text-sm !w-4 !h-4">check_circle</mat-icon>
                       Downloaded
                     </span>
                   }
@@ -45,32 +47,40 @@
         </mat-card>
       </div>
 
-      <div class="order-sidebar">
-        <mat-card>
-          <h3>Order Status</h3>
-          <p class="status" [class]="'status-' + order()!.status">{{ order()!.status | titlecase }}</p>
+      <div class="order-sidebar flex flex-col gap-5">
+        <mat-card class="glass-card !p-5">
+          <h3 class="!text-sm !uppercase !tracking-wider !text-slate-400 !mb-3">Order Status</h3>
+          <p class="status !text-xl !font-bold capitalize"
+            [class.!text-amber-400]="order()!.status === 'pending'"
+            [class.!text-blue-400]="order()!.status === 'paid' || order()!.status === 'processing'"
+            [class.!text-green-400]="order()!.status === 'shipped' || order()!.status === 'delivered'"
+            [class.!text-red-400]="order()!.status === 'cancelled'">
+            {{ order()!.status | titlecase }}
+          </p>
           @if (order()!.trackingNumber) {
-            <p class="tracking">Tracking: {{ order()!.trackingNumber }}</p>
+            <p class="tracking !text-sm !text-slate-500 !mt-2">Tracking: {{ order()!.trackingNumber }}</p>
           }
         </mat-card>
 
-        <mat-card>
-          <h3>Shipping Address</h3>
-          <p>{{ order()!.shippingAddress.fullName }}</p>
-          <p>{{ order()!.shippingAddress.street }}</p>
-          <p>{{ order()!.shippingAddress.city }}, {{ order()!.shippingAddress.state }} {{ order()!.shippingAddress.zipCode }}</p>
-          <p>{{ order()!.shippingAddress.country }}</p>
+        <mat-card class="glass-card !p-5">
+          <h3 class="!text-sm !uppercase !tracking-wider !text-slate-400 !mb-3">Shipping Address</h3>
+          <div class="!text-slate-300 !space-y-1 !text-sm">
+            <p>{{ order()!.shippingAddress.fullName }}</p>
+            <p>{{ order()!.shippingAddress.street }}</p>
+            <p>{{ order()!.shippingAddress.city }}, {{ order()!.shippingAddress.state }} {{ order()!.shippingAddress.zipCode }}</p>
+            <p>{{ order()!.shippingAddress.country }}</p>
+          </div>
         </mat-card>
 
-        <mat-card>
-          <h3>Order Total</h3>
-          <div class="total-row">
-            <span>Subtotal</span>
-            <span>${{ getSubtotal().toFixed(2) }}</span>
+        <mat-card class="glass-card !p-5">
+          <h3 class="!text-sm !uppercase !tracking-wider !text-slate-400 !mb-3">Order Total</h3>
+          <div class="total-row flex justify-between py-2">
+            <span class="!text-slate-400">Subtotal</span>
+            <span class="!text-slate-200">${{ getSubtotal().toFixed(2) }}</span>
           </div>
-          <div class="total-row grand">
-            <span>Total</span>
-            <span>${{ order()!.totalAmount.toFixed(2) }}</span>
+          <div class="total-row grand flex justify-between py-3 border-t border-white/5 mt-2">
+            <span class="!text-slate-100 !font-bold">Total</span>
+            <span class="!text-xl !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${{ order()!.totalAmount.toFixed(2) }}</span>
           </div>
         </mat-card>
       </div>
