@@ -1,33 +1,50 @@
-<div class="seller-orders container">
-  <h1>Orders</h1>
+<div class="seller-orders container max-w-4xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">Orders</h1>
 
   @if (loading()) {
-    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
   } @else if (orders().length === 0) {
-    <div class="empty-state">
-      <mat-icon>receipt_long</mat-icon>
-      <h3>No orders yet</h3>
-      <p>When customers buy your products, orders will appear here</p>
+    <div class="empty-state text-center py-20 px-8 glass-card">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">receipt_long</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-2">No orders yet</h3>
+      <p class="text-slate-500">When customers buy your products, orders will appear here</p>
     </div>
   } @else {
-    <div class="orders-list">
+    <div class="orders-list flex flex-col gap-4">
       @for (order of orders(); track order._id) {
-        <mat-card class="order-card">
-          <div class="order-header">
-            <span class="order-id">Order #{{ order._id.slice(-8) | uppercase }}</span>
-            <span class="status" [class]="'status-' + order.status">{{ order.status }}</span>
+        <mat-card class="order-card !bg-slate-800/60 !backdrop-blur-md !border !border-white/5 !rounded-2xl !p-5 !transition-all !duration-300 hover:!border-indigo-500/30">
+          <div class="order-header flex justify-between items-center mb-4">
+            <span class="order-id !font-semibold !text-slate-200">Order #{{ order._id.slice(-8) | uppercase }}</span>
+            <!-- <span class="status !px-3 !py-1 !rounded-full !text-xs !font-semibold capitalize"
+              [class.!bg-amber-500/10.!text-amber-400.!border.!border-amber-500/20]="order.status === 'pending'"
+              [class.!bg-blue-500/10.!text-blue-400.!border.!border-blue-500/20]="order.status === 'paid'"
+              [class.!bg-green-500/10.!text-green-400.!border.!border-green-500/20]="order.status === 'shipped' || order.status === 'delivered'">
+              {{ order.status }}
+            </span> -->
+            <span
+  class="status !px-3 !py-1 !rounded-full !text-xs !font-semibold capitalize"
+  [ngClass]="{
+    '!bg-amber-500/10 !text-amber-400 !border !border-amber-500/20': order.status === 'pending',
+    '!bg-blue-500/10 !text-blue-400 !border !border-blue-500/20': order.status === 'paid',
+    '!bg-green-500/10 !text-green-400 !border !border-green-500/20': order.status === 'shipped' || order.status === 'delivered'
+  }"
+>
+  {{ order.status }}
+</span>
           </div>
-          <div class="order-items">
+          <div class="order-items flex flex-col gap-2 mb-4 pb-4 border-b border-white/5">
             @for (item of order.items; track item._id) {
-              <div class="item">
-                <span class="item-name">{{ item.product?.title }} x {{ item.quantity }}</span>
-                <span class="item-price">\${{ (item.price * item.quantity).toFixed(2) }}</span>
+              <div class="item flex justify-between items-center py-1">
+                <span class="item-name !text-sm !text-slate-300">{{ item.product?.title }} x {{ item.quantity }}</span>
+                <span class="item-price !text-sm !font-medium !text-slate-400">${{ (item.price * item.quantity).toFixed(2) }}</span>
               </div>
             }
           </div>
-          <div class="order-footer">
-            <span>{{ order.createdAt | date:'medium' }}</span>
-            <span class="total">Total: \${{ order.totalAmount.toFixed(2) }}</span>
+          <div class="order-footer flex justify-between !text-sm">
+            <span class="!text-slate-500">{{ order.createdAt | date:'medium' }}</span>
+            <span class="total !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Total: ${{ order.totalAmount.toFixed(2) }}</span>
           </div>
         </mat-card>
       }

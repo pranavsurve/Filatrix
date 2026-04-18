@@ -1,88 +1,90 @@
-<div class="product-detail container">
+<div class="product-detail container max-w-6xl mx-auto px-4 py-8">
   @if (loading()) {
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
     </div>
   } @else if (product()) {
-    <div class="breadcrumb">
-      <a routerLink="/products">Products</a>
-      <mat-icon>chevron_right</mat-icon>
-      <span>{{ product()!.title }}</span>
+    <div class="breadcrumb flex items-center gap-2 mb-8 text-sm">
+      <a routerLink="/products" class="text-indigo-400 hover:text-indigo-300 no-underline transition-colors">Products</a>
+      <mat-icon class="!text-sm !w-4 !h-4 text-slate-500">chevron_right</mat-icon>
+      <span class="text-slate-400 truncate">{{ product()!.title }}</span>
     </div>
 
-    <div class="product-content">
+    <div class="product-content grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+      <!-- Images -->
       <div class="product-images">
-        <div class="main-image">
+        <div class="main-image rounded-2xl overflow-hidden bg-slate-800/60 border border-white/5 aspect-square flex items-center justify-center">
           @if (selectedImage()) {
-            <img [src]="selectedImage()" [alt]="product()!.title">
+            <img [src]="selectedImage()" [alt]="product()!.title" class="w-full h-full object-contain">
           } @else {
-            <div class="placeholder">
-              <mat-icon>3d_rotation</mat-icon>
-              <p>No preview available</p>
+            <div class="placeholder text-center">
+              <mat-icon class="!text-6xl !w-16 !h-16 text-slate-600 mb-2">3d_rotation</mat-icon>
+              <p class="text-slate-500 text-sm">No preview available</p>
             </div>
           }
         </div>
         @if (product()!.previewImages && product()!.previewImages.length > 1) {
-          <div class="thumbnail-list">
+          <div class="thumbnail-list flex gap-3 mt-4 overflow-x-auto pb-2">
             @for (img of product()!.previewImages; track img) {
               <button
-                class="thumbnail"
-                [class.active]="selectedImage() === img"
+                class="thumbnail flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 cursor-pointer"
+                [class.!border-indigo-500]="selectedImage() === img"
+                [class.!border-transparent]="selectedImage() !== img"
                 (click)="selectImage(img)">
-                <img [src]="img" [alt]="product()!.title">
+                <img [src]="img" [alt]="product()!.title" class="w-full h-full object-cover">
               </button>
             }
           </div>
         }
       </div>
 
+      <!-- Info -->
       <div class="product-info">
-        <h1>{{ product()!.title }}</h1>
+        <h1 class="!text-3xl !font-bold !text-slate-100 !mb-4">{{ product()!.title }}</h1>
 
-        <div class="meta">
-          <span class="seller">
-            <mat-icon>person</mat-icon>
-            by {{ product()!.seller?.name }}
+        <div class="meta flex flex-wrap gap-5 mb-6 text-slate-400">
+          <span class="flex items-center gap-1.5">
+            <mat-icon class="!text-sm !w-4 !h-4 text-indigo-400">person</mat-icon>
+            <span>by {{ product()!.seller?.name }}</span>
           </span>
           @if (product()!.averageRating > 0) {
-            <span class="rating">
-              <mat-icon>star</mat-icon>
-              {{ product()!.averageRating.toFixed(1) }}
-              ({{ product()!.reviewCount }} reviews)
+            <span class="flex items-center gap-1.5">
+              <mat-icon class="!text-sm !w-4 !h-4 text-amber-400">star</mat-icon>
+              <span>{{ product()!.averageRating.toFixed(1) }} ({{ product()!.reviewCount }} reviews)</span>
             </span>
           }
-          <span class="downloads">
-            <mat-icon>download</mat-icon>
-            {{ product()!.downloadCount }} downloads
+          <span class="flex items-center gap-1.5">
+            <mat-icon class="!text-sm !w-4 !h-4 text-indigo-400">download</mat-icon>
+            <span>{{ product()!.downloadCount }} downloads</span>
           </span>
         </div>
 
-        <div class="price-section">
-          <span class="price">\${{ product()!.price.toFixed(2) }}</span>
+        <div class="price-section flex items-baseline gap-3 mb-6">
+          <span class="!text-4xl !font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${{ product()!.price.toFixed(2) }}</span>
           @if (product()!.fileType) {
-            <span class="file-type">{{ product()!.fileType | uppercase }} files included</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 uppercase tracking-wide">{{ product()!.fileType }} files</span>
           }
         </div>
 
-        <p class="description">{{ product()!.description }}</p>
+        <p class="description !text-slate-400 !leading-relaxed !mb-6">{{ product()!.description }}</p>
 
-        <div class="tags">
+        <div class="tags flex flex-wrap gap-2 mb-6">
           @for (tag of product()!.tags; track tag) {
-            <mat-chip>{{ tag }}</mat-chip>
+            <mat-chip class="!text-xs !bg-indigo-500/10 !text-indigo-300 !border !border-indigo-500/20 !rounded-full">#{{ tag }}</mat-chip>
           }
         </div>
 
         @if (product()!.dimensions) {
-          <div class="specs">
-            <h3>Dimensions</h3>
-            <p>{{ product()!.dimensions!.width }} x {{ product()!.dimensions!.height }} x {{ product()!.dimensions!.depth }} mm</p>
+          <div class="specs glass-card !p-5 !mb-5">
+            <h3 class="!text-xs !uppercase !tracking-wider !text-slate-400 !mb-2">Dimensions</h3>
+            <p class="!text-slate-200 !font-medium">{{ product()!.dimensions!.width }} x {{ product()!.dimensions!.height }} x {{ product()!.dimensions!.depth }} mm</p>
           </div>
         }
 
         @if (product()!.printSettings) {
-          <div class="specs">
-            <h3>Print Settings</h3>
-            <ul>
+          <div class="specs glass-card !p-5 !mb-6">
+            <h3 class="!text-xs !uppercase !tracking-wider !text-slate-400 !mb-2">Print Settings</h3>
+            <ul class="!list-disc !pl-5 !text-slate-300 !space-y-1">
               @if (product()!.printSettings!.layerHeight) {
                 <li>Layer Height: {{ product()!.printSettings!.layerHeight }}</li>
               }
@@ -96,45 +98,45 @@
           </div>
         }
 
-        <div class="actions">
+        <div class="actions flex flex-wrap gap-3">
           @if (isAuthenticated()) {
-            <button mat-raised-button color="primary" (click)="addToCart()">
-              <mat-icon>add_shopping_cart</mat-icon>
+            <button mat-raised-button class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all !px-6 !py-3 !font-semibold !shadow-lg !shadow-indigo-500/20" (click)="addToCart()">
+              <mat-icon class="!mr-1">add_shopping_cart</mat-icon>
               Add to Cart
             </button>
-            <button mat-stroked-button (click)="toggleWishlist()">
-              <mat-icon>{{ isInWishlist() ? 'favorite' : 'favorite_border' }}</mat-icon>
+            <button mat-stroked-button class="!rounded-xl !text-slate-200 !border-slate-600 hover:!bg-slate-800/50 hover:!border-indigo-400/50 transition-colors" (click)="toggleWishlist()">
+              <mat-icon class="!mr-1">{{ isInWishlist() ? 'favorite' : 'favorite_border' }}</mat-icon>
               {{ isInWishlist() ? 'Remove from Wishlist' : 'Add to Wishlist' }}
             </button>
           } @else {
-            <a mat-raised-button color="primary" routerLink="/auth/login">Login to Purchase</a>
+            <a mat-raised-button routerLink="/auth/login" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all !px-6 !py-3 !font-semibold">Login to Purchase</a>
           }
         </div>
       </div>
     </div>
 
     @if (reviews().length > 0) {
-      <section class="reviews-section">
-        <h2>Customer Reviews</h2>
-        <div class="reviews-list">
+      <section class="reviews-section border-t border-white/5 pt-10">
+        <h2 class="!text-2xl !font-bold !text-slate-100 !mb-6">Customer Reviews</h2>
+        <div class="reviews-list flex flex-col gap-4">
           @for (review of reviews(); track review._id) {
-            <div class="review-card">
-              <div class="review-header">
-                <div class="reviewer">
-                  <mat-icon>account_circle</mat-icon>
-                  <span>{{ review.user?.name }}</span>
+            <mat-card class="!bg-slate-800/60 !backdrop-blur-md !border !border-white/5 !rounded-xl !p-5">
+              <div class="review-header flex justify-between items-center mb-3">
+                <div class="reviewer flex items-center gap-2">
+                  <mat-icon class="!text-xl !w-6 !h-6 text-slate-500">account_circle</mat-icon>
+                  <span class="!text-slate-300">{{ review.user?.name }}</span>
                 </div>
-                <div class="rating">
+                <div class="rating flex gap-0.5">
                   @for (star of [1,2,3,4,5]; track star) {
-                    <mat-icon>{{ star <= review.rating ? 'star' : 'star_border' }}</mat-icon>
+                    <mat-icon class="!text-sm !w-4 !h-4 text-amber-400">{{ star <= review.rating ? 'star' : 'star_border' }}</mat-icon>
                   }
                 </div>
               </div>
               @if (review.comment) {
-                <p class="comment">{{ review.comment }}</p>
+                <p class="comment !text-slate-300 !mb-2">{{ review.comment }}</p>
               }
-              <span class="date">{{ review.createdAt | date }}</span>
-            </div>
+              <span class="date !text-xs !text-slate-500">{{ review.createdAt | date }}</span>
+            </mat-card>
           }
         </div>
       </section>

@@ -1,68 +1,68 @@
-<div class="cart-container container">
-  <h1>Shopping Cart</h1>
+<div class="cart-container container max-w-6xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">Shopping Cart</h1>
 
   @if (loading()) {
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
     </div>
   } @else if (items().length === 0) {
-    <div class="empty-cart">
-      <mat-icon>shopping_cart</mat-icon>
-      <h3>Your cart is empty</h3>
-      <p>Add some 3D printed products to get started</p>
-      <a mat-raised-button color="primary" routerLink="/products">Browse Products</a>
+    <div class="empty-cart text-center py-20 px-8 glass-card">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">shopping_cart</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-2">Your cart is empty</h3>
+      <p class="text-slate-500 mb-6">Add some 3D printed products to get started</p>
+      <a mat-raised-button routerLink="/products" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all !px-6 !py-2">Browse Products</a>
     </div>
   } @else {
-    <div class="cart-content">
-      <div class="cart-items">
+    <div class="cart-content grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8">
+      <div class="cart-items flex flex-col gap-4">
         @for (item of items(); track item._id) {
-          <mat-card class="cart-item">
-            <div class="item-image">
+          <mat-card class="cart-item flex items-center gap-4 !p-4 !bg-slate-800/60 !backdrop-blur-md">
+            <div class="item-image w-20 h-20 rounded-xl overflow-hidden bg-slate-700/50 flex items-center justify-center flex-shrink-0">
               @if (item.product?.thumbnail) {
-                <img [src]="item.product.thumbnail" [alt]="item.product.title">
+                <img [src]="item.product.thumbnail" [alt]="item.product.title" class="w-full h-full object-cover">
               } @else {
-                <mat-icon>3d_rotation</mat-icon>
+                <mat-icon class="text-slate-500">3d_rotation</mat-icon>
               }
             </div>
-            <div class="item-details">
-              <h3>{{ item.product?.title }}</h3>
-              <p class="price">\${{ item.product?.price?.toFixed(2) }}</p>
+            <div class="item-details flex-1 min-w-0">
+              <h3 class="!text-base !font-semibold !text-slate-100 !mb-1 truncate">{{ item.product?.title }}</h3>
+              <p class="price !text-indigo-400 !font-semibold">${{ item.product?.price?.toFixed(2) }}</p>
             </div>
-            <div class="item-quantity">
-              <button mat-icon-button (click)="decrementQuantity(item)" [disabled]="item.quantity <= 1">
+            <div class="item-quantity flex items-center gap-1">
+              <button mat-icon-button (click)="decrementQuantity(item)" [disabled]="item.quantity <= 1" class="!text-slate-400 hover:!text-slate-200">
                 <mat-icon>remove</mat-icon>
               </button>
-              <span>{{ item.quantity }}</span>
-              <button mat-icon-button (click)="incrementQuantity(item)">
+              <span class="!text-slate-200 !w-8 !text-center">{{ item.quantity }}</span>
+              <button mat-icon-button (click)="incrementQuantity(item)" class="!text-slate-400 hover:!text-slate-200">
                 <mat-icon>add</mat-icon>
               </button>
             </div>
-            <div class="item-subtotal">
-              \${{ (item.product?.price || 0) * item.quantity | number:'1.2-2' }}
+            <div class="item-subtotal !text-lg !font-bold !text-slate-100 !min-w-[80px] !text-right">
+              ${{ (item.product?.price || 0) * item.quantity | number:'1.2-2' }}
             </div>
-            <button mat-icon-button color="warn" (click)="removeItem(item._id)">
+            <button mat-icon-button (click)="removeItem(item._id)" class="!text-slate-500 hover:!text-pink-400 transition-colors">
               <mat-icon>delete</mat-icon>
             </button>
           </mat-card>
         }
       </div>
 
-      <mat-card class="cart-summary">
-        <h2>Summary</h2>
-        <div class="summary-row">
+      <mat-card class="cart-summary glass-card !p-6 !h-fit !lg:sticky !lg:top-20">
+        <h2 class="!text-xl !font-bold !text-slate-100 !mb-4">Summary</h2>
+        <div class="summary-row flex justify-between py-3 text-slate-400">
           <span>Subtotal ({{ items().length }} items)</span>
-          <span>\${{ subtotal() | number:'1.2-2' }}</span>
+          <span>${{ subtotal() | number:'1.2-2' }}</span>
         </div>
-        <div class="summary-row">
+        <div class="summary-row flex justify-between py-3 text-slate-400">
           <span>Shipping</span>
-          <span>Calculated at checkout</span>
+          <span class="text-slate-500">Calculated at checkout</span>
         </div>
-        <mat-divider></mat-divider>
-        <div class="summary-row total">
-          <span>Total</span>
-          <span>\${{ subtotal() | number:'1.2-2' }}</span>
+        <mat-divider class="!border-slate-700/50 !my-2"></mat-divider>
+        <div class="summary-row total flex justify-between py-4 !text-xl !font-bold">
+          <span class="text-slate-100">Total</span>
+          <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">${{ subtotal() | number:'1.2-2' }}</span>
         </div>
-        <a mat-raised-button color="primary" routerLink="/checkout" class="checkout-btn">
+        <a mat-raised-button routerLink="/checkout" class="checkout-btn !w-full !mt-4 !h-12 !text-base !font-semibold !rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/20">
           Proceed to Checkout
         </a>
       </mat-card>

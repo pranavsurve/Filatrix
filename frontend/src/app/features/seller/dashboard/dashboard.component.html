@@ -1,62 +1,64 @@
-<div class="dashboard-container container">
-  <h1>Admin Dashboard</h1>
+<div class="dashboard-container container max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">Seller Dashboard</h1>
 
   @if (loading()) {
-    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
   } @else {
-    <div class="stats-grid">
-      <mat-card class="stat-card">
-        <mat-icon>inventory_2</mat-icon>
-        <div class="stat-info">
-          <span class="stat-value">{{ stats()?.totalProducts || 0 }}</span>
-          <span class="stat-label">Total Products</span>
+    <div class="stats-grid grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
+      <mat-card class="stat-card glass-card !p-5 flex items-center gap-3">
+        <mat-icon class="!text-3xl !w-10 !h-10 text-indigo-400">inventory_2</mat-icon>
+        <div class="stat-info flex flex-col">
+          <span class="stat-value !text-2xl !font-bold !text-slate-100">{{ stats()?.totalProducts || 0 }}</span>
+          <span class="stat-label !text-xs !text-slate-500">Total Products</span>
         </div>
       </mat-card>
 
-      <mat-card class="stat-card">
-        <mat-icon>check_circle</mat-icon>
-        <div class="stat-info">
-          <span class="stat-value">{{ stats()?.approvedProducts || 0 }}</span>
-          <span class="stat-label">Approved</span>
+      <mat-card class="stat-card glass-card !p-5 flex items-center gap-3">
+        <mat-icon class="!text-3xl !w-10 !h-10 text-green-400">check_circle</mat-icon>
+        <div class="stat-info flex flex-col">
+          <span class="stat-value !text-2xl !font-bold !text-slate-100">{{ stats()?.approvedProducts || 0 }}</span>
+          <span class="stat-label !text-xs !text-slate-500">Approved</span>
         </div>
       </mat-card>
 
-      <mat-card class="stat-card pending">
-        <mat-icon>hourglass_empty</mat-icon>
-        <div class="stat-info">
-          <span class="stat-value">{{ stats()?.pendingProducts || 0 }}</span>
-          <span class="stat-label">Pending</span>
+      <mat-card class="stat-card glass-card !p-5 flex items-center gap-3">
+        <mat-icon class="!text-3xl !w-10 !h-10 text-amber-400">hourglass_empty</mat-icon>
+        <div class="stat-info flex flex-col">
+          <span class="stat-value !text-2xl !font-bold !text-slate-100">{{ stats()?.pendingProducts || 0 }}</span>
+          <span class="stat-label !text-xs !text-slate-500">Pending</span>
         </div>
       </mat-card>
 
-      <mat-card class="stat-card">
-        <mat-icon>attach_money</mat-icon>
-        <div class="stat-info">
-          <span class="stat-value">\${{ (stats()?.totalEarnings || 0).toFixed(2) }}</span>
-          <span class="stat-label">Total Earnings</span>
+      <mat-card class="stat-card glass-card !p-5 flex items-center gap-3">
+        <mat-icon class="!text-3xl !w-10 !h-10 text-purple-400">attach_money</mat-icon>
+        <div class="stat-info flex flex-col">
+          <span class="stat-value !text-2xl !font-bold !text-slate-100">${{ (stats()?.totalEarnings || 0).toFixed(0) }}</span>
+          <span class="stat-label !text-xs !text-slate-500">Total Earnings</span>
         </div>
       </mat-card>
 
-      <mat-card class="stat-card">
-        <mat-icon>shopping_bag</mat-icon>
-        <div class="stat-info">
-          <span class="stat-value">{{ stats()?.totalSales || 0 }}</span>
-          <span class="stat-label">Total Sales</span>
+      <mat-card class="stat-card glass-card !p-5 flex items-center gap-3">
+        <mat-icon class="!text-3xl !w-10 !h-10 text-pink-400">shopping_bag</mat-icon>
+        <div class="stat-info flex flex-col">
+          <span class="stat-value !text-2xl !font-bold !text-slate-100">{{ stats()?.totalSales || 0 }}</span>
+          <span class="stat-label !text-xs !text-slate-500">Total Sales</span>
         </div>
       </mat-card>
     </div>
 
-    <div class="actions">
-      <a mat-raised-button color="primary" routerLink="/seller/products/new">
-        <mat-icon>add</mat-icon>
+    <div class="actions flex flex-wrap gap-3">
+      <a mat-raised-button routerLink="/seller/products/new" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all !px-5 !py-2 !font-semibold !shadow-lg !shadow-indigo-500/20">
+        <mat-icon class="!mr-1">add</mat-icon>
         Add New Product
       </a>
-      <a mat-stroked-button routerLink="/seller/products">
-        <mat-icon>list</mat-icon>
+      <a mat-stroked-button routerLink="/seller/products" class="!rounded-xl !text-slate-300 !border-slate-600 hover:!bg-slate-800/50 hover:!border-indigo-400/50 !px-5 !py-2">
+        <mat-icon class="!mr-1">list</mat-icon>
         Manage Products
       </a>
-      <a mat-stroked-button routerLink="/seller/orders">
-        <mat-icon>receipt</mat-icon>
+      <a mat-stroked-button routerLink="/seller/orders" class="!rounded-xl !text-slate-300 !border-slate-600 hover:!bg-slate-800/50 hover:!border-indigo-400/50 !px-5 !py-2">
+        <mat-icon class="!mr-1">receipt</mat-icon>
         View Orders
       </a>
     </div>

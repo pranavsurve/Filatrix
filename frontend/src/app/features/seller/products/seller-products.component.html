@@ -1,42 +1,59 @@
-<div class="seller-products container">
-  <div class="header">
-    <h1>My Products</h1>
-    <a mat-raised-button color="primary" routerLink="/seller/products/new">
-      <mat-icon>add</mat-icon> Add Product
+<div class="seller-products container max-w-4xl mx-auto px-4 py-8">
+  <div class="header flex flex-wrap justify-between items-center gap-4 mb-8">
+    <h1 class="text-3xl font-bold text-slate-100">My Products</h1>
+    <a mat-raised-button routerLink="/seller/products/new" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all !px-4 !py-2 !font-semibold !shadow-lg !shadow-indigo-500/20">
+      <mat-icon class="!mr-1">add</mat-icon> Add Product
     </a>
   </div>
 
   @if (loading()) {
-    <div class="loading-spinner"><mat-spinner></mat-spinner></div>
+    <div class="loading-spinner flex justify-center py-20">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
   } @else if (products().length === 0) {
-    <div class="empty-state">
-      <mat-icon>inventory_2</mat-icon>
-      <h3>No products yet</h3>
-      <p>Start selling by adding your first product</p>
-      <a mat-raised-button color="primary" routerLink="/seller/products/new">Add Product</a>
+    <div class="empty-state text-center py-20 px-8 glass-card">
+      <mat-icon class="!text-7xl !w-20 !h-20 text-slate-600 mb-4">inventory_2</mat-icon>
+      <h3 class="text-xl font-semibold text-slate-300 mb-2">No products yet</h3>
+      <p class="text-slate-500 mb-6">Start selling by adding your first product</p>
+      <a mat-raised-button routerLink="/seller/products/new" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:scale-105 !transition-all">Add Product</a>
     </div>
   } @else {
-    <div class="products-list">
+    <div class="products-list flex flex-col gap-4">
       @for (product of products(); track product._id) {
-        <mat-card class="product-card">
-          <div class="product-image">
+        <mat-card class="product-card !bg-slate-800/60 !backdrop-blur-md !border !border-white/5 !rounded-xl !p-4 flex items-center gap-4 !transition-all !duration-300 hover:!border-indigo-500/30">
+          <div class="product-image w-20 h-20 rounded-xl overflow-hidden bg-slate-700/50 flex items-center justify-center flex-shrink-0">
             @if (product.thumbnail) {
-              <img [src]="product.thumbnail" [alt]="product.title">
+              <img [src]="product.thumbnail" [alt]="product.title" class="w-full h-full object-cover">
             } @else {
-              <mat-icon>3d_rotation</mat-icon>
+              <mat-icon class="text-slate-500">3d_rotation</mat-icon>
             }
           </div>
-          <div class="product-info">
-            <h3>{{ product.title }}</h3>
-            <p class="price">\${{ product.price.toFixed(2) }}</p>
-            <span class="status" [class]="'status-' + product.status">{{ product.status }}</span>
+          <div class="product-info flex-1 min-w-0">
+            <h3 class="!text-base !font-semibold !text-slate-100 !mb-1 !truncate">{{ product.title }}</h3>
+            <p class="price !text-indigo-400 !font-bold !mb-1.5">${{ product.price.toFixed(2) }}</p>
+            <!-- <span class="status !text-xs !px-2.5 !py-1 !rounded-md !font-semibold capitalize"
+              [class.!bg-amber-500/10.!text-amber-400.!border.!border-amber-500/20]="product.status === 'pending'"
+              [class.!bg-green-500/10.!text-green-400.!border.!border-green-500/20]="product.status === 'approved'"
+              [class.!bg-red-500/10.!text-red-400.!border.!border-red-500/20]="product.status === 'rejected'">
+              {{ product.status }}
+            </span> -->
+            <span
+  class="status !text-xs !px-2.5 !py-1 !rounded-md !font-semibold capitalize"
+  [ngClass]="{
+    '!bg-amber-500/10 !text-amber-400 !border !border-amber-500/20': product.status === 'pending',
+    '!bg-green-500/10 !text-green-400 !border !border-green-500/20': product.status === 'approved',
+    '!bg-red-500/10 !text-red-400 !border !border-red-500/20': product.status === 'rejected'
+  }"
+>
+  {{ product.status }}
+</span>
           </div>
-          <div class="product-actions">
-            <a mat-button [routerLink]="['/seller/products/edit', product._id]">
-              <mat-icon>edit</mat-icon> Edit
+          <div class="product-actions flex items-center gap-1">
+            <a mat-stroked-button [routerLink]="['/seller/products/edit', product._id]" class="!rounded-lg !text-slate-300 !border-slate-600 hover:!bg-slate-800/50 !text-sm !px-3 !py-1">
+              <mat-icon class="!text-sm !mr-0.5">edit</mat-icon> Edit
             </a>
-            <button mat-button color="warn" (click)="deleteProduct(product._id)">
-              <mat-icon>delete</mat-icon> Delete
+            <button mat-stroked-button (click)="deleteProduct(product._id)" class="!rounded-lg !text-pink-400/70 !border-pink-500/30 hover:!bg-pink-500/10 hover:!text-pink-400 !text-sm !px-3 !py-1">
+              <mat-icon class="!text-sm !mr-0.5">delete</mat-icon> Delete
             </button>
           </div>
         </mat-card>

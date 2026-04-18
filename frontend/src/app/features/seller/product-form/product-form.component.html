@@ -1,27 +1,27 @@
-<div class="product-form container">
-  <h1>{{ isEdit() ? 'Edit Product' : 'Add New Product' }}</h1>
+<div class="product-form container max-w-3xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-slate-100 mb-8">{{ isEdit() ? 'Edit Product' : 'Add New Product' }}</h1>
 
-  <mat-card>
-    <form (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Title</mat-label>
-        <input matInput [(ngModel)]="product.title" name="title" required>
+  <mat-card class="glass-card !p-6">
+    <form (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+      <mat-form-field appearance="outline" class="!w-full">
+        <mat-label class="text-slate-400">Title</mat-label>
+        <input matInput [(ngModel)]="product.title" name="title" required class="text-slate-200">
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput [(ngModel)]="product.description" name="description" rows="4" required></textarea>
+      <mat-form-field appearance="outline" class="!w-full">
+        <mat-label class="text-slate-400">Description</mat-label>
+        <textarea matInput [(ngModel)]="product.description" name="description" rows="4" required class="text-slate-200 resize-none"></textarea>
       </mat-form-field>
 
-      <div class="form-row">
+      <div class="form-row grid grid-cols-1 sm:grid-cols-3 gap-4">
         <mat-form-field appearance="outline">
-          <mat-label>Price</mat-label>
-          <input matInput type="number" [(ngModel)]="product.price" name="price" required min="0">
+          <mat-label class="text-slate-400">Price ($)</mat-label>
+          <input matInput type="number" [(ngModel)]="product.price" name="price" required min="0" class="text-slate-200">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Category</mat-label>
-          <mat-select [(ngModel)]="product.category" name="category" required>
+          <mat-label class="text-slate-400">Category</mat-label>
+          <mat-select [(ngModel)]="product.category" name="category" required class="text-slate-200">
             <mat-option value="art">Art & Sculpture</mat-option>
             <mat-option value="toys">Toys & Games</mat-option>
             <mat-option value="home">Home & Decor</mat-option>
@@ -32,15 +32,15 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Tags (comma separated)</mat-label>
-          <input matInput [(ngModel)]="tagsInput" name="tags">
+          <mat-label class="text-slate-400">Tags</mat-label>
+          <input matInput [(ngModel)]="tagsInput" name="tags" placeholder="art, custom, toy" class="text-slate-200">
         </mat-form-field>
       </div>
 
-      <div class="form-row">
+      <div class="form-row grid grid-cols-1 sm:grid-cols-2 gap-4">
         <mat-form-field appearance="outline">
-          <mat-label>File Type</mat-label>
-          <mat-select [(ngModel)]="product.fileType" name="fileType">
+          <mat-label class="text-slate-400">File Type</mat-label>
+          <mat-select [(ngModel)]="product.fileType" name="fileType" class="text-slate-200">
             <mat-option value="stl">STL</mat-option>
             <mat-option value="obj">OBJ</mat-option>
             <mat-option value="both">Both</mat-option>
@@ -49,32 +49,32 @@
       </div>
 
       <div class="dimensions">
-        <h3>Dimensions (mm)</h3>
-        <div class="form-row">
+        <h3 class="!text-sm !font-semibold !text-slate-300 !mb-3">Dimensions (mm)</h3>
+        <div class="form-row grid grid-cols-3 gap-4">
           <mat-form-field appearance="outline">
-            <mat-label>Width</mat-label>
-            <input matInput type="number" [(ngModel)]="dimensions.width" name="width">
+            <mat-label class="text-slate-400">Width</mat-label>
+            <input matInput type="number" [(ngModel)]="dimensions.width" name="width" class="text-slate-200">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Height</mat-label>
-            <input matInput type="number" [(ngModel)]="dimensions.height" name="height">
+            <mat-label class="text-slate-400">Height</mat-label>
+            <input matInput type="number" [(ngModel)]="dimensions.height" name="height" class="text-slate-200">
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Depth</mat-label>
-            <input matInput type="number" [(ngModel)]="dimensions.depth" name="depth">
+            <mat-label class="text-slate-400">Depth</mat-label>
+            <input matInput type="number" [(ngModel)]="dimensions.depth" name="depth" class="text-slate-200">
           </mat-form-field>
         </div>
       </div>
 
       @if (success()) {
-        <p class="success-message">Product saved successfully!</p>
+        <p class="success-message !text-green-400 !text-sm !p-3 !rounded-lg !bg-green-500/10 !border !border-green-500/20">Product saved successfully!</p>
       }
 
-      <div class="form-actions">
-        <button mat-raised-button color="primary" type="submit" [disabled]="saving()">
+      <div class="form-actions flex flex-wrap gap-3">
+        <button mat-raised-button type="submit" [disabled]="saving()" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 !font-semibold hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/20 !px-8 !py-2">
           {{ saving() ? 'Saving...' : 'Save Product' }}
         </button>
-        <a mat-button routerLink="/seller/products">Cancel</a>
+        <a mat-stroked-button routerLink="/seller/products" class="!rounded-xl !text-slate-300 !border-slate-600 hover:!bg-slate-800/50">Cancel</a>
       </div>
     </form>
   </mat-card>

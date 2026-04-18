@@ -1,33 +1,33 @@
-<div class="auth-container">
-  <mat-card class="auth-card">
-    <mat-card-header>
-      <mat-card-title>Create Account</mat-card-title>
-      <mat-card-subtitle>Join Filatrix - 3D Print Products</mat-card-subtitle>
+<div class="auth-container min-h-[70vh] flex items-center justify-center p-6">
+  <mat-card class="auth-card glass-card !w-full !max-w-md">
+    <mat-card-header class="!mb-6">
+      <mat-card-title class="!text-2xl !font-bold !text-slate-100">Create Account</mat-card-title>
+      <mat-card-subtitle class="!text-slate-400 !mt-1">Join Filatrix — 3D Print Products</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <form (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Name</mat-label>
-          <input matInput [(ngModel)]="name" name="name" required>
+      <form (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+        <mat-form-field appearance="outline" class="!w-full">
+          <mat-label class="text-slate-400">Name</mat-label>
+          <input matInput [(ngModel)]="name" name="name" required class="text-slate-200">
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" [(ngModel)]="email" name="email" required>
+        <mat-form-field appearance="outline" class="!w-full">
+          <mat-label class="text-slate-400">Email</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="email" required class="text-slate-200">
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required minlength="6">
-          <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword">
+        <mat-form-field appearance="outline" class="!w-full">
+          <mat-label class="text-slate-400">Password</mat-label>
+          <input matInput [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required minlength="6" class="text-slate-200">
+          <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" class="text-slate-400 hover:text-indigo-400 transition-colors">
             <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>I want to</mat-label>
-          <mat-select [(ngModel)]="role" name="role">
+        <mat-form-field appearance="outline" class="!w-full">
+          <mat-label class="text-slate-400">I want to</mat-label>
+          <mat-select [(ngModel)]="role" name="role" class="text-slate-200">
             <mat-option value="buyer">Buy 3D printed items</mat-option>
             <mat-option value="seller">Sell 3D printed items</mat-option>
           </mat-select>
@@ -37,13 +37,13 @@
           <div class="error-message">{{ error() }}</div>
         }
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+        <button mat-raised-button type="submit" [disabled]="loading()" class="!w-full !h-12 !text-base !font-semibold !rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/20">
           {{ loading() ? 'Creating account...' : 'Create Account' }}
         </button>
       </form>
 
-      <div class="auth-footer">
-        <p>Already have an account? <a routerLink="/auth/login">Login</a></p>
+      <div class="auth-footer !mt-6 !text-center !text-slate-400">
+        <p>Already have an account? <a routerLink="/auth/login" class="!text-indigo-400 hover:!text-indigo-300 !no-underline hover:!underline transition-colors">Login</a></p>
       </div>
     </mat-card-content>
   </mat-card>

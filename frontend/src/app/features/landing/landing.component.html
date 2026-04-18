@@ -1,48 +1,46 @@
 <div class="landing-container">
-  <section class="hero">
-    <div class="hero-content">
-      <h1>3D Print Products</h1>
-      <p class="tagline">Discover, Create, and Share Amazing 3D Printed Products</p>
-      <div class="hero-actions">
-        <a mat-raised-button color="primary" routerLink="/products">Explore Products</a>
-        <a mat-raised-button routerLink="/auth/register">Start Selling</a>
+  <!-- Hero Section -->
+  <section class="hero relative py-28 px-8 overflow-hidden">
+    <!-- Background gradient blobs -->
+    <div class="absolute inset-0 -z-10">
+      <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="hero-content max-w-4xl mx-auto text-center">
+      <h1 class="text-5xl font-bold mb-5 bg-gradient-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">3D Print Products</h1>
+      <p class="tagline text-xl mb-10 text-slate-400">Premium 3D printing — in-house manufacturing, custom designs, guaranteed quality.</p>
+      <div class="hero-actions flex gap-4 justify-center flex-wrap">
+        <a mat-raised-button routerLink="/products" class="!text-base !px-8 !py-3 !rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/30 hover:scale-105 !transition-all">Explore Products</a>
+        <a mat-stroked-button routerLink="/auth/register" class="!text-base !px-8 !py-3 !rounded-xl !text-slate-200 !border-slate-600 hover:!bg-slate-800/50 hover:!border-indigo-400/50 !transition-all">Get Started</a>
       </div>
     </div>
   </section>
 
-  <section class="features">
-    <div class="container">
-      <h2>Why Choose Filatrix?</h2>
-      <div class="features-grid">
-        <div class="feature-card">
-          <mat-icon>palette</mat-icon>
-          <h3>Unique Creations</h3>
-          <p>Browse thousands of unique 3D printed items from talented creators worldwide.</p>
-        </div>
-        <div class="feature-card">
-          <mat-icon>upload_file</mat-icon>
-          <h3>Upload Your Designs</h3>
-          <p>Upload your STL or OBJ files and let our network of 3D printers bring them to life.</p>
-        </div>
-        <div class="feature-card">
-          <mat-icon>verified</mat-icon>
-          <h3>Quality Assured</h3>
-          <p>All sellers are verified and products are quality-checked before shipping.</p>
-        </div>
-        <div class="feature-card">
-          <mat-icon>local_shipping</mat-icon>
-          <h3>Fast Production</h3>
-          <p>Our network ensures fast turnaround times for all your custom prints.</p>
-        </div>
+  <!-- Features Section -->
+  <section class="features py-20 px-8">
+    <div class="container mx-auto max-w-6xl">
+      <h2 class="text-center text-3xl font-bold mb-12 text-slate-100">Why Choose Filatrix?</h2>
+      <div class="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        @for (feature of features; track feature.title) {
+          <div class="glass-card group p-8 text-center cursor-default">
+            <div class="flex justify-center mb-4 transition-transform duration-300 ease-out group-hover:scale-110">
+              <mat-icon class="!text-5xl !w-12 !h-12 text-indigo-400">{{ feature.icon }}</mat-icon>
+            </div>
+            <h3 class="text-lg font-semibold mb-3 text-slate-200 transition-colors duration-300 group-hover:text-indigo-400">{{ feature.title }}</h3>
+            <p class="text-slate-400 leading-relaxed text-sm">{{ feature.description }}</p>
+          </div>
+        }
       </div>
     </div>
   </section>
 
-  <section class="cta">
-    <div class="container">
-      <h2>Ready to Get Started?</h2>
-      <p>Join thousands of creators and buyers in the 3D printing revolution.</p>
-      <a mat-raised-button color="accent" routerLink="/auth/register">Create Free Account</a>
+  <!-- CTA Section -->
+  <section class="cta py-20 px-8">
+    <div class="container mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold mb-4 text-slate-100">Ready to Get Started?</h2>
+      <p class="text-lg text-slate-400 mb-8">Upload your design or browse our catalog — quality prints delivered to your door.</p>
+      <a mat-raised-button routerLink="/auth/register" class="!text-base !px-8 !py-3 !rounded-xl !bg-gradient-to-r !from-pink-500 !to-purple-600 !text-white !border-0 hover:!from-pink-400 hover:!to-purple-500 !shadow-lg !shadow-pink-500/30 hover:scale-105 !transition-all">Create Free Account</a>
     </div>
   </section>
 </div>

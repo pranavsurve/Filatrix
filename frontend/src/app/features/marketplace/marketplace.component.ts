@@ -11,6 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductService } from '../../core/services/product.service';
+import { WishlistService } from '../../core/services/wishlist.service';
+import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../shared/models/product.model';
 
 @Component({
@@ -45,6 +47,8 @@ export class MarketplaceComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private wishlistService: WishlistService,
+    private cartService: CartService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -74,6 +78,25 @@ export class MarketplaceComponent implements OnInit {
     this.page = event.pageIndex + 1;
     this.pagination.update(p => ({ ...p, limit: event.pageSize }));
     this.loadProducts();
+  }
+
+  onToggleWishlist(product: Product, event: Event): void {
+    event.stopPropagation();
+    this.wishlistService.addToWishlist(product._id).subscribe({
+      next: () => {
+        const current = this.wishlistService.wishlistCountSubject.getValue();
+        this.wishlistService.updateWishlistCount(current + 1);
+      },
+      error: (err) => console.error('Wishlist error:', err)
+    });
+  }
+
+  onAddToCart(product: Product, event: Event): void {
+    event.stopPropagation();
+    this.cartService.addToCart(product._id, 1).subscribe({
+      next: () => console.log('Added to cart:', product._id),
+      error: (err) => console.error('Cart error:', err)
+    });
   }
 
   private loadProducts(): void {
