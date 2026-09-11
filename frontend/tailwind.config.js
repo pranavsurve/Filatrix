@@ -3,6 +3,11 @@ module.exports = {
   content: [
     "./src/**/*.{html,ts}",
   ],
+  // Tailwind preflight resets break Angular Material outlined form fields
+  // (overlapping labels, invisible input text).
+  corePlugins: {
+    preflight: false,
+  },
   darkMode: 'class',
   theme: {
     extend: {
