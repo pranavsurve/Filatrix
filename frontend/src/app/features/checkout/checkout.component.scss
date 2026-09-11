@@ -13,6 +13,12 @@
   .checkout-form {
     .full-width { width: 100%; }
 
+    .checkout-fields {
+      .mat-mdc-form-field {
+        width: 100%;
+      }
+    }
+
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;

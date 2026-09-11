@@ -4,7 +4,7 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 const reviewController = require('../controllers/reviewController');
 const { protect, authorize } = require('../middleware/auth');
-const { upload } = require('../middleware/upload');
+const { upload, uploadImages, handleUploadError } = require('../middleware/upload');
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -22,6 +22,8 @@ router.get('/:id', productController.getProduct);
 router.post('/', [
   protect,
   authorize('seller', 'admin'),
+  uploadImages.array('images', 5),
+  handleUploadError,
   body('title').trim().notEmpty().withMessage('Title is required'),
   body('description').trim().notEmpty().withMessage('Description is required'),
   body('price').isFloat({ min: 0 }).withMessage('Valid price is required'),
@@ -33,7 +35,8 @@ router.delete('/:id', protect, productController.deleteProduct);
 
 router.put('/images/:id', [
   protect,
-  upload.array('images', 5)
+  uploadImages.array('images', 5),
+  handleUploadError
 ], productController.updateProductImages);
 
 router.get('/:productId/reviews', reviewController.getProductReviews);

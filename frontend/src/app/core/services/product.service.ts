@@ -46,7 +46,17 @@ export class ProductService {
     );
   }
 
-  createProduct(product: any): Observable<{ product: Product }> {
+  createProduct(product: any, images?: File[]): Observable<{ product: Product }> {
+    if (images?.length) {
+      const formData = new FormData();
+      Object.entries(product).forEach(([key, value]) => {
+        if (value === undefined || value === null) return;
+        formData.append(key, typeof value === 'object' ? JSON.stringify(value) : String(value));
+      });
+      images.forEach(image => formData.append('images', image));
+      return this.http.post<{ product: Product }>(`${constService.API_URL}/products`, formData);
+    }
+
     return this.http.post<{ product: Product }>(
       `${constService.API_URL}/products`,
       product

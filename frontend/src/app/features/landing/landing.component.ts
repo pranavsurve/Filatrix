@@ -12,6 +12,27 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent {
+  showcaseImages = [
+    {
+      src: 'assets/images/filatrix-logo.jpg',
+      alt: 'FilatrixStudio brand',
+      title: 'FilatrixStudio',
+      caption: 'Premium 3D print marketplace & maker studio'
+    },
+    {
+      src: 'assets/images/pexels-papaz-30620861.jpg',
+      alt: '3D printing in action',
+      title: 'Precision Printing',
+      caption: 'Industrial-grade equipment for every design'
+    },
+    {
+      src: 'assets/images/filatrix-logo.jpg',
+      alt: 'FilatrixStudio workshop',
+      title: 'Maker Community',
+      caption: 'Buy unique prints or sell your own creations'
+    }
+  ];
+
   features = [
     {
       icon: 'precision_manufacturing',

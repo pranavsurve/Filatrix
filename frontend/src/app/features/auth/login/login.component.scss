@@ -1,8 +1,24 @@
 .auth-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem;
+}
+
+.auth-logo-link {
+  display: block;
+  transition: transform 0.25s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+
+.auth-logo {
+  height: 88px;
+  width: auto;
+  object-fit: contain;
 }
 
 .auth-card {

@@ -30,6 +30,7 @@ module.exports = {
         'fade-in': 'fadeIn 0.4s ease-out',
         'slide-up': 'slideUp 0.4s ease-out',
         'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+        'menu-in': 'menuIn 0.22s cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
         fadeIn: {
@@ -41,8 +42,12 @@ module.exports = {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         glowPulse: {
-          '0%, 100%': { boxShadow: '0 0 8px rgba(99, 102, 241, 0.3)' },
-          '50%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.6)' },
+          '0%, 100%': { boxShadow: '0 0 8px rgba(34, 211, 238, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(129, 140, 248, 0.55)' },
+        },
+        menuIn: {
+          '0%': { opacity: '0', transform: 'translateY(-10px) scale(0.97)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
         },
       },
       backgroundImage: {

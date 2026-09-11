@@ -16,37 +16,37 @@
       <div class="checkout-form flex flex-col gap-6">
         <mat-card class="glass-card !p-6">
           <h2 class="!text-xl !font-bold !text-slate-100 !mb-5">Shipping Address</h2>
-          <form class="flex flex-col gap-4">
-            <mat-form-field appearance="outline" class="!w-full">
-              <mat-label class="text-slate-400">Full Name</mat-label>
+          <form class="flex flex-col gap-4 checkout-fields">
+            <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic" class="!w-full">
+              <mat-label>Full Name</mat-label>
               <input matInput [(ngModel)]="shippingAddress.fullName" name="fullName" required class="text-slate-200">
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="!w-full">
-              <mat-label class="text-slate-400">Street Address</mat-label>
+            <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic" class="!w-full">
+              <mat-label>Street Address</mat-label>
               <input matInput [(ngModel)]="shippingAddress.street" name="street" required class="text-slate-200">
             </mat-form-field>
 
             <div class="form-row grid grid-cols-2 gap-4">
-              <mat-form-field appearance="outline">
-                <mat-label class="text-slate-400">City</mat-label>
+              <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic">
+                <mat-label>City</mat-label>
                 <input matInput [(ngModel)]="shippingAddress.city" name="city" required class="text-slate-200">
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label class="text-slate-400">State</mat-label>
+              <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic">
+                <mat-label>State</mat-label>
                 <input matInput [(ngModel)]="shippingAddress.state" name="state" required class="text-slate-200">
               </mat-form-field>
             </div>
 
             <div class="form-row grid grid-cols-2 gap-4">
-              <mat-form-field appearance="outline">
-                <mat-label class="text-slate-400">ZIP Code</mat-label>
+              <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic">
+                <mat-label>ZIP Code</mat-label>
                 <input matInput [(ngModel)]="shippingAddress.zipCode" name="zipCode" required class="text-slate-200">
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <mat-label class="text-slate-400">Country</mat-label>
+              <mat-form-field appearance="outline" floatLabel="always" subscriptSizing="dynamic">
+                <mat-label>Country</mat-label>
                 <input matInput [(ngModel)]="shippingAddress.country" name="country" required class="text-slate-200">
               </mat-form-field>
             </div>

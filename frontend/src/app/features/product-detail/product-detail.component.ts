@@ -6,11 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AssetUrlPipe } from '../../shared/pipes/asset-url.pipe';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { WishlistService } from '../../core/services/wishlist.service';
 import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../core/services/notification.service';
 import { Product } from '../../shared/models/product.model';
 
 @Component({
@@ -24,7 +26,8 @@ import { Product } from '../../shared/models/product.model';
     MatIconModule,
     MatChipsModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    AssetUrlPipe
   ],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
@@ -35,6 +38,8 @@ export class ProductDetailComponent implements OnInit {
   loading = signal(true);
   selectedImage = signal<string>('');
   wishlistProductIds = signal<string[]>([]);
+  wishlistAnimating = signal(false);
+  cartAnimating = signal(false);
 
   isAuthenticated = () => this.authService.isAuthenticated();
 
@@ -45,7 +50,7 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private wishlistService: WishlistService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +74,7 @@ export class ProductDetailComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.snackBar.open('Failed to load product', 'Close', { duration: 3000 });
+        this.notification.error('Failed to load product');
         this.router.navigate(['/products']);
       }
     });
@@ -100,10 +105,12 @@ export class ProductDetailComponent implements OnInit {
 
     this.cartService.addToCart(product._id).subscribe({
       next: () => {
-        this.snackBar.open('Added to cart', 'Close', { duration: 2000 });
+        this.cartAnimating.set(true);
+        setTimeout(() => this.cartAnimating.set(false), 500);
+        this.notification.cartAdded(product.title);
       },
       error: (err) => {
-        this.snackBar.open(err.error?.message || 'Failed to add to cart', 'Close', { duration: 3000 });
+        this.notification.error(err.error?.message || 'Failed to add to cart');
       }
     });
   }
@@ -116,15 +123,21 @@ export class ProductDetailComponent implements OnInit {
       this.wishlistService.removeFromWishlist(product._id).subscribe({
         next: () => {
           this.wishlistProductIds.set(this.wishlistProductIds().filter(id => id !== product._id));
-          this.snackBar.open('Removed from wishlist', 'Close', { duration: 2000 });
-        }
+          this.wishlistService.updateWishlistCount(this.wishlistProductIds().length);
+          this.notification.wishlistRemoved(product.title);
+        },
+        error: (err) => this.notification.error(err.error?.message || 'Failed to update wishlist')
       });
     } else {
+      this.wishlistAnimating.set(true);
+      setTimeout(() => this.wishlistAnimating.set(false), 650);
       this.wishlistService.addToWishlist(product._id).subscribe({
         next: () => {
           this.wishlistProductIds.set([...this.wishlistProductIds(), product._id]);
-          this.snackBar.open('Added to wishlist', 'Close', { duration: 2000 });
-        }
+          this.wishlistService.updateWishlistCount(this.wishlistProductIds().length);
+          this.notification.wishlistAdded(product.title);
+        },
+        error: (err) => this.notification.error(err.error?.message || 'Failed to add to wishlist')
       });
     }
   }
