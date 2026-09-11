@@ -5,7 +5,7 @@
   </header>
 
   <div class="filters flex flex-wrap gap-4 mb-10">
-    <mat-form-field appearance="outline" class="flex-1 min-w-40">
+    <mat-form-field appearance="outline" class="flex-1 min-w-0 sm:min-w-40">
       <mat-label class="text-slate-400">Category</mat-label>
       <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
         <mat-option value="">All Categories</mat-option>
@@ -18,7 +18,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="flex-1 min-w-40">
+    <mat-form-field appearance="outline" class="flex-1 min-w-0 sm:min-w-40">
       <mat-label class="text-slate-400">Sort By</mat-label>
       <mat-select [(ngModel)]="sortBy" (ngModelChange)="onFilterChange()">
         <mat-option value="">Newest</mat-option>
@@ -29,7 +29,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="flex-[2] min-w-60">
+    <mat-form-field appearance="outline" class="flex-[2] min-w-0 sm:min-w-60">
       <mat-label class="text-slate-400">Search products...</mat-label>
       <input matInput [(ngModel)]="searchQuery" (keyup.enter)="onSearch()" class="text-slate-200">
       <button matSuffix mat-icon-button (click)="onSearch()" class="text-slate-400 hover:text-indigo-400 transition-colors">

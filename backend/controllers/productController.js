@@ -1,6 +1,17 @@
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 
+const normalizeTags = (tags) => {
+  if (!tags) return [];
+  if (Array.isArray(tags)) {
+    return tags.map(t => String(t).trim()).filter(Boolean);
+  }
+  if (typeof tags === 'string') {
+    return tags.split(',').map(t => t.trim()).filter(Boolean);
+  }
+  return [];
+};
+
 exports.getProducts = async (req, res, next) => {
   try {
     const { page = 1, limit = 12, category, minPrice, maxPrice, search, sortBy, seller } = req.query;
@@ -74,7 +85,7 @@ exports.createProduct = async (req, res, next) => {
       title,
       description,
       price,
-      tags: tags ? tags.split(',').map(t => t.trim()) : [],
+      tags: normalizeTags(tags),
       category,
       modelFile: req.file ? `/uploads/models/${req.file.filename}` : '',
       seller: req.user._id,
