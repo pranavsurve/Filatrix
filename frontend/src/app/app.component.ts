@@ -7,9 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from './core/services/auth.service';
 import { CartService } from './core/services/cart.service';
 import { WishlistService } from './core/services/wishlist.service';
+import { NotificationService } from './core/services/notification.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -25,7 +27,8 @@ import { Subscription } from 'rxjs';
     MatIconModule,
     MatMenuModule,
     MatBadgeModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSnackBarModule
   ],
   template: `
     <div class="app-container">
@@ -51,7 +54,7 @@ import { Subscription } from 'rxjs';
               <mat-icon [matBadge]="cartCount" [matBadgeHidden]="cartCount === 0" matBadgeColor="primary" class="text-slate-300">shopping_cart</mat-icon>
             </a>
 
-            <button class="glass-btn flex items-center gap-2 text-sm" [matMenuTriggerFor]="userMenu">
+            <button type="button" class="glass-btn flex items-center gap-2 text-sm" [matMenuTriggerFor]="userMenu">
               <span class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-indigo-500/20">
                 {{ currentUser()?.name?.[0]?.toUpperCase() || 'U' }}
               </span>
@@ -224,7 +227,8 @@ export class AppComponent {
   constructor(
     private authService: AuthService,
     private cartService: CartService,
-    private wishlistService: WishlistService
+    private wishlistService: WishlistService,
+    private notification: NotificationService
   ) {
     if (this.isAuthenticated()) {
       this.loadCounts();
@@ -254,5 +258,6 @@ export class AppComponent {
 
   logout(): void {
     this.authService.logout();
+    this.notification.success('Logged out successfully');
   }
 }

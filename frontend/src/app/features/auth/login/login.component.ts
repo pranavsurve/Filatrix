@@ -7,8 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +38,7 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private notification: NotificationService
   ) {}
 
   onSubmit(): void {
@@ -51,11 +52,14 @@ export class LoginComponent {
 
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
+        this.notification.success('Logged in successfully');
         this.router.navigate(['/']);
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.message || 'Login failed');
+        const message = err.error?.message || 'Login failed';
+        this.error.set(message);
+        this.notification.error(message);
       }
     });
   }
