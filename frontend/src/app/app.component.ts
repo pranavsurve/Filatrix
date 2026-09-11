@@ -63,6 +63,51 @@ import { Subscription } from 'rxjs';
                 <span class="user-name">{{ currentUser()?.name }}</span>
                 <mat-icon class="chevron" [class.rotated]="userMenuTrigger.menuOpen">expand_more</mat-icon>
               </button>
+
+              <mat-menu
+                #userMenu="matMenu"
+                class="filatrix-user-menu"
+                xPosition="before"
+                yPosition="below"
+                [overlapTrigger]="false">
+                <ng-template matMenuContent>
+                  @if (currentUser(); as user) {
+                    <div class="user-menu-header">
+                      <div class="user-menu-avatar">{{ user.name?.[0]?.toUpperCase() || 'U' }}</div>
+                      <div>
+                        <p class="user-menu-name">{{ user.name }}</p>
+                        <p class="user-menu-email">{{ user.email }}</p>
+                      </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                  }
+                  <a routerLink="/profile" mat-menu-item>
+                    <mat-icon>person</mat-icon>
+                    Profile
+                  </a>
+                  @if (isSeller()) {
+                    <a routerLink="/seller/dashboard" mat-menu-item>
+                      <mat-icon>store</mat-icon>
+                      Seller Dashboard
+                    </a>
+                  }
+                  @if (isAdmin()) {
+                    <a routerLink="/admin/dashboard" mat-menu-item>
+                      <mat-icon>admin_panel_settings</mat-icon>
+                      Admin Panel
+                    </a>
+                  }
+                  <a routerLink="/orders" mat-menu-item>
+                    <mat-icon>receipt_long</mat-icon>
+                    My Orders
+                  </a>
+                  <mat-divider></mat-divider>
+                  <button mat-menu-item class="logout-item" (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                    Logout
+                  </button>
+                </ng-template>
+              </mat-menu>
             } @else {
               <a routerLink="/auth/login" class="nav-btn nav-btn-ghost">Login</a>
               <a routerLink="/auth/register" class="nav-btn nav-btn-primary">Sign Up</a>
@@ -71,51 +116,6 @@ import { Subscription } from 'rxjs';
         </div>
         <div class="nav-accent-line"></div>
       </nav>
-
-      <mat-menu
-        #userMenu="matMenu"
-        class="filatrix-user-menu"
-        xPosition="before"
-        yPosition="below"
-        [overlapTrigger]="false">
-        <ng-template matMenuContent>
-          @if (currentUser(); as user) {
-            <div class="user-menu-header">
-              <div class="user-menu-avatar">{{ user.name?.[0]?.toUpperCase() || 'U' }}</div>
-              <div>
-                <p class="user-menu-name">{{ user.name }}</p>
-                <p class="user-menu-email">{{ user.email }}</p>
-              </div>
-            </div>
-            <mat-divider></mat-divider>
-          }
-          <a routerLink="/profile" mat-menu-item>
-            <mat-icon>person</mat-icon>
-            Profile
-          </a>
-          @if (isSeller()) {
-            <a routerLink="/seller/dashboard" mat-menu-item>
-              <mat-icon>store</mat-icon>
-              Seller Dashboard
-            </a>
-          }
-          @if (isAdmin()) {
-            <a routerLink="/admin/dashboard" mat-menu-item>
-              <mat-icon>admin_panel_settings</mat-icon>
-              Admin Panel
-            </a>
-          }
-          <a routerLink="/orders" mat-menu-item>
-            <mat-icon>receipt_long</mat-icon>
-            My Orders
-          </a>
-          <mat-divider></mat-divider>
-          <button mat-menu-item class="logout-item" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            Logout
-          </button>
-        </ng-template>
-      </mat-menu>
 
       <main class="main-content page-enter">
         <router-outlet></router-outlet>
@@ -148,6 +148,7 @@ import { Subscription } from 'rxjs';
     .nav-inner {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 1.5rem;
       padding: 0.75rem 2rem;
       max-width: 1400px;
@@ -239,6 +240,7 @@ import { Subscription } from 'rxjs';
       gap: 0.65rem;
       margin-left: auto;
       flex-shrink: 0;
+      position: relative;
     }
 
     .nav-link-icon {

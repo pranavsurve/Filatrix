@@ -245,16 +245,16 @@
 
 .cdk-overlay-pane {
   pointer-events: auto;
+  /* CDK positions overlays via transform on this pane — never override it. */
+  max-width: calc(100vw - 16px);
 }
 
 @keyframes filatrix-menu-in {
   from {
     opacity: 0;
-    transform: translateY(-10px) scale(0.97);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -280,9 +280,12 @@
     0 16px 40px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(129, 140, 248, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
-  animation: filatrix-menu-in 0.22s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-origin: top right;
   overflow: hidden;
+}
+
+/* Animate inner content only — never transform the overlay panel (breaks CDK positioning). */
+.filatrix-user-menu .mat-mdc-menu-content {
+  animation: filatrix-menu-in 0.22s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .user-menu-header {
@@ -385,11 +388,9 @@
 @keyframes card-float-in {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -504,7 +505,7 @@
 }
 
 /* Material cards in dark mode */
-.mat-mdc-card {
+.mat-mdc-card:not(.product-card) {
   background: rgba(30, 41, 59, 0.6) !important;
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.06) !important;
