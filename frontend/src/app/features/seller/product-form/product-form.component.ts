@@ -8,8 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ProductService } from '../../../core/services/product.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { Product } from '../../../shared/models/product.model';
 
 @Component({
@@ -39,7 +40,7 @@ export class ProductFormComponent implements OnInit {
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar
+    private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -82,13 +83,16 @@ export class ProductFormComponent implements OnInit {
       next: () => {
         this.saving.set(false);
         this.success.set(true);
+        this.notification.success(
+          this.isEdit() ? 'Product updated successfully' : 'Product added successfully'
+        );
         setTimeout(() => {
           this.router.navigate(['/seller/products']);
         }, 1500);
       },
       error: (err) => {
         this.saving.set(false);
-        this.snackBar.open(err.error?.message || 'Failed to save product', 'Close', { duration: 3000 });
+        this.notification.error(err.error?.message || 'Failed to save product');
       }
     });
   }

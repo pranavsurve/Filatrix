@@ -8,8 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -41,7 +42,7 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private notification: NotificationService
   ) {}
 
   onSubmit(): void {
@@ -65,12 +66,14 @@ export class RegisterComponent {
       role: this.role
     }).subscribe({
       next: () => {
-        this.snackBar.open('Account created successfully!', 'Close', { duration: 3000 });
+        this.notification.success('Account created successfully!');
         this.router.navigate(['/']);
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.message || 'Registration failed');
+        const message = err.error?.message || 'Registration failed';
+        this.error.set(message);
+        this.notification.error(message);
       }
     });
   }

@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema({
   },
   modelFile: {
     type: String,
-    required: [true, '3D model file is required']
+    default: ''
   },
   previewImages: [{
     type: String

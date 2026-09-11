@@ -7,7 +7,7 @@
   <div class="filters flex flex-wrap gap-4 mb-10">
     <mat-form-field appearance="outline" class="flex-1 min-w-0 sm:min-w-40">
       <mat-label class="text-slate-400">Category</mat-label>
-      <mat-select [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
+      <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onFilterChange()">
         <mat-option value="">All Categories</mat-option>
         <mat-option value="art">Art & Sculpture</mat-option>
         <mat-option value="toys">Toys & Games</mat-option>
@@ -20,7 +20,7 @@
 
     <mat-form-field appearance="outline" class="flex-1 min-w-0 sm:min-w-40">
       <mat-label class="text-slate-400">Sort By</mat-label>
-      <mat-select [(ngModel)]="sortBy" (ngModelChange)="onFilterChange()">
+      <mat-select [(ngModel)]="sortBy" (selectionChange)="onFilterChange()">
         <mat-option value="">Newest</mat-option>
         <mat-option value="price_asc">Price: Low to High</mat-option>
         <mat-option value="price_desc">Price: High to Low</mat-option>
