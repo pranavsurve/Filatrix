@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Review = require('../models/Review');
+const { parseJsonField, buildPreviewImages } = require('../utils/parseBody');
 
 const normalizeTags = (tags) => {
   if (!tags) return [];
@@ -79,7 +80,9 @@ exports.getProduct = async (req, res, next) => {
 
 exports.createProduct = async (req, res, next) => {
   try {
-    const { title, description, price, tags, category, dimensions, printSettings, fileType } = req.body;
+    const { title, description, price, tags, category, printSettings, fileType, imageUrl } = req.body;
+    const dimensions = parseJsonField(req.body.dimensions);
+    const previewImages = buildPreviewImages(req.files, imageUrl);
 
     const product = await Product.create({
       title,
@@ -87,10 +90,12 @@ exports.createProduct = async (req, res, next) => {
       price,
       tags: normalizeTags(tags),
       category,
-      modelFile: req.file ? `/uploads/models/${req.file.filename}` : '',
+      modelFile: req.modelFile ? `/uploads/models/${req.modelFile.filename}` : '',
+      previewImages,
+      thumbnail: previewImages[0] || '',
       seller: req.user._id,
       dimensions,
-      printSettings,
+      printSettings: parseJsonField(printSettings, undefined),
       fileType,
       status: req.user.role === 'admin' ? 'approved' : 'pending'
     });
@@ -115,7 +120,23 @@ exports.updateProduct = async (req, res, next) => {
       return res.status(403).json({ message: 'Not authorized to update this product' });
     }
 
-    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    const updates = { ...req.body };
+    if (updates.dimensions) {
+      updates.dimensions = parseJsonField(updates.dimensions);
+    }
+    if (updates.tags) {
+      updates.tags = normalizeTags(updates.tags);
+    }
+    if (updates.imageUrl !== undefined) {
+      const url = String(updates.imageUrl || '').trim();
+      if (url) {
+        updates.previewImages = [url, ...(product.previewImages || []).filter(img => img !== url)];
+        updates.thumbnail = updates.previewImages[0];
+      }
+      delete updates.imageUrl;
+    }
+
+    product = await Product.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true
     }).populate('seller', 'name avatar');
@@ -168,11 +189,9 @@ exports.updateProductImages = async (req, res, next) => {
       return res.status(403).json({ message: 'Not authorized' });
     }
 
-    const previewImages = req.files.map(f => `/uploads/models/${f.filename}`);
-    product.previewImages = previewImages;
-    if (!product.thumbnail && previewImages.length > 0) {
-      product.thumbnail = previewImages[0];
-    }
+    const previewImages = req.files.map(f => `/uploads/images/${f.filename}`);
+    product.previewImages = [...previewImages, ...(product.previewImages || [])].slice(0, 5);
+    product.thumbnail = product.previewImages[0] || product.thumbnail;
     await product.save();
 
     res.json({ success: true, product });

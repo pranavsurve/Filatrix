@@ -13,6 +13,42 @@
         <textarea matInput [(ngModel)]="product.description" name="description" rows="4" required class="text-slate-200 resize-none"></textarea>
       </mat-form-field>
 
+      <div class="image-section">
+        <h3 class="!text-sm !font-semibold !text-slate-300 !mb-2">Product Images</h3>
+        <p class="!text-xs !text-slate-500 !mb-4">Upload JPG/PNG/WebP (max 5MB each) or paste a free image URL from Imgur, Postimages, etc.</p>
+
+        <div class="image-upload-zone">
+          <input
+            #fileInput
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            multiple
+            class="hidden"
+            (change)="onImagesSelected($event)">
+          <button type="button" mat-stroked-button class="!rounded-xl !border-cyan-500/30 !text-cyan-300" (click)="fileInput.click()">
+            <mat-icon class="!mr-1">upload</mat-icon>
+            Choose Images
+          </button>
+          @if (selectedImages.length) {
+            <span class="!text-sm !text-slate-400">{{ selectedImages.length }} file(s) selected</span>
+          }
+        </div>
+
+        @if (imagePreviews.length) {
+          <div class="image-previews">
+            @for (preview of imagePreviews; track preview) {
+              <img [src]="preview" alt="Preview" class="preview-thumb">
+            }
+          </div>
+        }
+
+        <mat-form-field appearance="outline" class="!w-full !mt-4">
+          <mat-label class="text-slate-400">Or paste image URL</mat-label>
+          <input matInput [(ngModel)]="imageUrl" name="imageUrl" placeholder="https://i.imgur.com/your-image.png" class="text-slate-200">
+          <mat-hint>Free hosting: Imgur, Postimages, Cloudinary free tier</mat-hint>
+        </mat-form-field>
+      </div>
+
       <div class="form-row grid grid-cols-1 sm:grid-cols-3 gap-4">
         <mat-form-field appearance="outline">
           <mat-label class="text-slate-400">Price ($)</mat-label>
@@ -71,7 +107,7 @@
       }
 
       <div class="form-actions flex flex-wrap gap-3">
-        <button mat-raised-button type="submit" [disabled]="saving()" class="!rounded-xl !bg-gradient-to-r !from-indigo-600 !to-purple-600 !text-white !border-0 !font-semibold hover:!from-indigo-500 hover:!to-purple-500 !shadow-lg !shadow-indigo-500/20 !px-8 !py-2">
+        <button mat-raised-button type="submit" [disabled]="saving()" class="!rounded-xl !bg-gradient-to-r !from-cyan-600 !to-indigo-600 !text-white !border-0 !font-semibold !px-8 !py-2">
           {{ saving() ? 'Saving...' : 'Save Product' }}
         </button>
         <a mat-stroked-button routerLink="/seller/products" class="!rounded-xl !text-slate-300 !border-slate-600 hover:!bg-slate-800/50">Cancel</a>
